@@ -11,8 +11,8 @@ export class Scanner {
         this.elements = content.split(this.delimiter).map(line => line.split(' ')).flat();
     }
 
-    isEndOfFile(): boolean {
-        return this.elements.length == 0;
+    hasNext(): boolean {
+        return this.elements.length > 0;
     }
 
     nextString(): string {
