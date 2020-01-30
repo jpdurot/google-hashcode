@@ -1,4 +1,4 @@
 export interface Solution<TPreConditions> {
-    value(preConditions: TPreConditions): number;
+    getScore(preConditions: TPreConditions): number;
     toOutputString():string;   
 }
