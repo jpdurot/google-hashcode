@@ -1,5 +1,6 @@
 import { Input } from './input';
 import { ISolution } from '../../../../hashcode-tooling/i-solution';
+import { OutputString } from '../../../../hashcode-tooling/OutputString';
 
 export class Output implements ISolution<Input> {
   orderedPizzaTypes: Array<number> = [];
@@ -12,9 +13,10 @@ export class Output implements ISolution<Input> {
   }
 
   toOutputString(): string {
-    let result: string = '';
-    result += `${this.orderedPizzaTypes.length}\n`;
-    result += this.orderedPizzaTypes.join(' ') + '\n';
-    return result;
+    const output = new OutputString();
+    output.addValue(this.orderedPizzaTypes.length);
+    output.nextLine();
+    output.addValues(this.orderedPizzaTypes);
+    return output.string;
   }
 }
