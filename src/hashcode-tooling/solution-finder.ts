@@ -38,7 +38,7 @@ export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreCondi
         this.bestScore = score;
         this.bestSolution = result;
         this.improvementsCount++;
-        console.log(`New solution found for ${this.shortInputName} - Score = ${score}`);
+        console.log(`[${this.generator.name}] New solution found for ${this.shortInputName} - Score = ${score}`);
         this.writeSolution();
       }
     }
@@ -50,9 +50,7 @@ export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreCondi
     const outputPath = path.dirname(this.inputFile) + '/../output';
 
     fs.writeFileSync(
-      `${outputPath}/${this.shortInputName}_${this.bestScore}_${
-        this.improvementsCount
-      }_${this.generator.getName()}.out`,
+      `${outputPath}/${this.shortInputName}_${this.bestScore}_${this.improvementsCount}_${this.generator.name}.out`,
       solutionString
     );
   }

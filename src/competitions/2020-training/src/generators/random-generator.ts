@@ -5,10 +5,11 @@ import * as Collections from 'typescript-collections';
 import { randomInArray, randIntMax } from '../../../../hashcode-tooling/utils';
 
 export class RandomGenerator implements ISolutionGenerator<Input, Output> {
+  static NAME = 'Random';
   hasNextGenerator: boolean = true;
 
-  getName(): string {
-    return 'Random';
+  get name(): string {
+    return RandomGenerator.NAME;
   }
 
   next(preConditions: Input): Output {

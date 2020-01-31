@@ -2,9 +2,9 @@
 
 ## How to
 
-Launch one of the competitions, for example `2020-training`
+Launch one of the competitions, for example `2020-training`, by providing one or multiple generator names. Ex:
 ```shell script
-node dist/competitions/2020-training/src/index.js 
+node dist/competitions/2020-training/src/index.js -g random
 ```
 
 Will read input files from

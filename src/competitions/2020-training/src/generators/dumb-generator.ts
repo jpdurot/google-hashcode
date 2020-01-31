@@ -3,10 +3,11 @@ import { Input } from '../models/input';
 import { Output } from '../models/output';
 
 export class DumbGenerator implements ISolutionGenerator<Input, Output> {
+  static NAME = 'Dumb';
   hasNextGenerator: boolean = true;
 
-  getName(): string {
-    return 'Dumb';
+  get name(): string {
+    return DumbGenerator.NAME;
   }
 
   next(preConditions: Input): Output {
