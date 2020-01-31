@@ -2,6 +2,7 @@ import { ISolution } from './i-solution';
 import { ISolutionGenerator } from './i-solution-generator';
 import { Scanner } from './files/scanner';
 import * as fs from 'fs';
+import * as path from 'path';
 
 export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreConditions> {
   private readonly fileScanner: Scanner;
@@ -9,6 +10,10 @@ export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreCondi
   private bestSolution: TResult | null = null;
   private improvementsCount: number = 0;
   private readonly preconditions: TPreConditions;
+
+  get shortInputName() {
+    return path.basename(this.inputFile);
+  }
 
   constructor(
     private inputFile: string,
@@ -31,7 +36,7 @@ export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreCondi
         this.bestScore = score;
         this.bestSolution = result;
         this.improvementsCount++;
-        console.log(`New solution found for ${this.inputFile} - Score = ${score}`);
+        console.log(`New solution found for ${this.shortInputName} - Score = ${score}`);
         this.writeSolution();
       }
     }
@@ -39,8 +44,13 @@ export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreCondi
 
   writeSolution() {
     const solutionString = this.bestSolution?.toOutputString();
+
+    const outputPath = path.dirname(this.inputFile) + '/../output';
+
     fs.writeFileSync(
-      `${this.inputFile}_${this.bestScore}_${this.improvementsCount}_${this.generator.getName()}.out`,
+      `${outputPath}/${this.shortInputName}_${this.bestScore}_${
+        this.improvementsCount
+      }_${this.generator.getName()}.out`,
       solutionString
     );
   }
