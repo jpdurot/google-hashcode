@@ -1,4 +1,4 @@
-import { ISolution } from './ISolution';
+import { ISolution } from './i-solution';
 import { ISolutionGenerator } from './i-solution-generator';
 import { Scanner } from './files/scanner';
 import * as fs from 'fs';

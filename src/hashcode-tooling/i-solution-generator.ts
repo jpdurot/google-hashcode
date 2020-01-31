@@ -1,4 +1,4 @@
-import { ISolution } from './ISolution';
+import { ISolution } from './i-solution';
 
 export interface ISolutionGenerator<TPreConditions, TResult extends ISolution<TPreConditions>> {
   getName(): string;
