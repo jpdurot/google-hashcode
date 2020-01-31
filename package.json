@@ -2,9 +2,10 @@
   "name": "google-hashcode",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "dev": "concurrently -k -n \"Typescript,NodeJS\" -p \"[{name}]\" -c \"blue,green\" \"tsc --watch\" \"nodemon dist/index.js\""
+    "dev": "concurrently -k -n \"Typescript,NodeJS\" -p \"[{name}]\" -c \"blue,green\" \"tsc --watch\" \"nodemon\"",
+    "prettier": "prettier --write \"./src/**/*.ts\""
   },
   "author": "",
   "license": "ISC",
@@ -12,6 +13,7 @@
     "@types/node": "^13.5.2",
     "concurrently": "^5.1.0",
     "nodemon": "^2.0.2",
+    "prettier": "^1.19.1",
     "typescript": "^3.7.5"
   }
 }
