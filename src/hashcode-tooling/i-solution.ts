@@ -1,4 +1,5 @@
 export interface ISolution<TPreConditions> {
-  getScore(preConditions: TPreConditions): number;
+  score: number;
   toOutputString(): string;
+  isValid(): boolean;
 }

@@ -4,19 +4,26 @@ import { Output } from '../models/output';
 
 export class DumbGenerator implements ISolutionGenerator<Input, Output> {
   hasNextGenerator: boolean = true;
+
   getName(): string {
     return 'Dumb';
   }
 
   next(preConditions: Input): Output {
-    const solution: Output = new Output();
-    let i = 0;
-    while (solution.getScore(preConditions) + preConditions.pizzaTypes[i] <= preConditions.maximumSlices) {
-      solution.orderedPizzaTypes.push(i);
-      i++;
+    // This is one shot
+    this.hasNextGenerator = false;
+
+    const solution = new Output(preConditions);
+
+    for (let i = 0; i < preConditions.pizzaTypes.length; i++) {
+      solution.addOrder(i);
+
+      if (!solution.isValid()) {
+        solution.rollback();
+        break;
+      }
     }
 
-    this.hasNextGenerator = false;
     return solution;
   }
 

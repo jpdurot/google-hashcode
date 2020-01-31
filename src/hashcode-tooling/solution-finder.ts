@@ -22,6 +22,8 @@ export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreCondi
   ) {
     this.fileScanner = new Scanner(inputFile);
     this.preconditions = preconditionsFactory(this.fileScanner);
+
+    console.log(`Importing ${inputFile}`);
   }
 
   findSolution(): void {
@@ -30,7 +32,7 @@ export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreCondi
     this.bestScore = Number.MIN_VALUE;
     while (this.generator.hasNext()) {
       const result: TResult = this.generator.next(this.preconditions);
-      const score: number = result.getScore(this.preconditions);
+      const score: number = result.score;
 
       if (score > this.bestScore) {
         this.bestScore = score;

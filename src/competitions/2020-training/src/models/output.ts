@@ -1,15 +1,23 @@
 import { Input } from './input';
-import { ISolution } from '../../../../hashcode-tooling/i-solution';
 import { OutputString } from '../../../../hashcode-tooling/OutputString';
+import { BaseSolution } from '../../../../hashcode-tooling/base-solution';
+import { ISolution } from '../../../../hashcode-tooling/i-solution';
 
-export class Output implements ISolution<Input> {
-  orderedPizzaTypes: Array<number> = [];
+export class Output extends BaseSolution<Input> implements ISolution<Input> {
+  private orderedPizzaTypes: Array<number> = [];
 
-  getScore(preConditions: Input): number {
-    if (this.orderedPizzaTypes.length == 0) return 0;
-    const score: number = this.orderedPizzaTypes.map((t, i) => preConditions.pizzaTypes[i]).reduce((a, b) => a + b);
+  addOrder(pizzaType: number): void {
+    this.orderedPizzaTypes.push(pizzaType);
+    this.score += this.preconditions.pizzaTypes[pizzaType];
+  }
 
-    return score > preConditions.maximumSlices ? 0 : score;
+  rollback(): boolean {
+    const lastPizzaType = this.orderedPizzaTypes.pop();
+    if (!lastPizzaType) {
+      return false;
+    }
+    this.score -= this.preconditions.pizzaTypes[lastPizzaType];
+    return true;
   }
 
   toOutputString(): string {
@@ -18,5 +26,9 @@ export class Output implements ISolution<Input> {
     output.nextLine();
     output.addValues(this.orderedPizzaTypes);
     return output.string;
+  }
+
+  isValid(): boolean {
+    return this.score <= this.preconditions.maximumSlices;
   }
 }
