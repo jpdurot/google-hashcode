@@ -2,7 +2,7 @@ import { SolutionFinder } from '../../../hashcode-tooling/solution-finder'
 import { Input } from './models/input'
 import { DumbGenerator } from './generators/dumb-generator'
 
-const inputDataDir:string = './src/competitions/2020-training/data'
+const inputDataDir:string = './src/competitions/2020-training/input'
 const inputFiles: Array<string> = [
     `${inputDataDir}/a_example.in`,
     `${inputDataDir}/b_small.in`,
