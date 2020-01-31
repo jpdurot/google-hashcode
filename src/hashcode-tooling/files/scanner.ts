@@ -2,13 +2,15 @@ import * as fs from "fs";
 
 export class Scanner {
 
-    private delimiter:string = '\n';
+    static lineDelimiter: string = '\n';
+    static colDelimiter = ' ';
 
     private elements: Array<string>;
 
     constructor(fileName: string) {
-        const content:string = fs.readFileSync(fileName).toString();
-        this.elements = content.split(this.delimiter).map(line => line.split(' ')).flat();
+        const content: string = fs.readFileSync(fileName).toString();
+        // TODO handle case for last end of line
+        this.elements = content.split(Scanner.lineDelimiter).map(line => line.split(Scanner.colDelimiter)).flat();
     }
 
     hasNext(): boolean {
@@ -16,7 +18,7 @@ export class Scanner {
     }
 
     nextString(): string {
-        return this.elements.shift() + ''; 
+        return this.elements.shift() + '';
     }
 
     nextNumber(): number {
