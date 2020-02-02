@@ -8,6 +8,8 @@ export class Output extends BaseSolution<Input> implements ISolution<Input> {
 
   addOrder(pizzaType: number): void {
     this.orderedPizzaTypes.push(pizzaType);
+    // Note: could be more simple if score is not cached but calculated at each call to get score(), wouldn't have
+    // to handle it in addOrder and rollback.
     this.score += this.preconditions.pizzaTypes[pizzaType];
   }
 

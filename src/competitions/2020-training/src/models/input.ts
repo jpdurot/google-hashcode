@@ -1,6 +1,7 @@
 import { Scanner } from '../../../../hashcode-tooling/files/scanner';
 
 export class Input {
+  // TODO could be a Set() to remove elements
   pizzaTypes: Array<number> = [];
   maximumSlices: number;
 
