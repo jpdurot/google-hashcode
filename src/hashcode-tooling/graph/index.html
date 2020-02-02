@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>Google Hashcode - TTT</title>
+
+    <base href="/"/>
+
+    <meta name="viewport"
+          content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js"></script>
+    <script
+            src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
+</head>
+
+<body>
+<script>
+    $(document).ready(() => {
+        $.ajaxSetup({cache: false});
+
+        var maxWidth = window.innerWidth;
+        var maxHeight = window.innerHeight;
+
+        $.getJSON({
+            url: './graph_data.json',
+            data: '',
+            success: (data) => {
+                var files = Object.keys(data);
+
+                var height = maxHeight / files.length;
+
+                console.log(height);
+
+                files.forEach(fileName => {
+                    var ctx = document.createElement('canvas');
+                    ctx.setAttribute('width', maxWidth);
+                    ctx.setAttribute('height', height);
+                    document.body.appendChild(ctx);
+
+                    new Chart(
+                        ctx.getContext('2d'),
+                        {
+                            type: 'line',
+                            data: {
+                                datasets: data[fileName].datasets.map(d => ({...d, lineTension: 0}))
+                            },
+                            options: {
+                                title: {
+                                    display: true,
+                                    text: fileName
+                                },
+                                scales: {
+                                    xAxes: [{
+                                        type: 'time',
+                                        time: {
+                                            parser: 'UTC',
+                                            unit: 'minute'
+                                        }
+                                    }]
+                                }
+                            }
+                        });
+                });
+            }
+        });
+    });
+
+</script>
+</body>
+
+</html>
