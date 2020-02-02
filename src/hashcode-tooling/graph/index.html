@@ -32,8 +32,6 @@
 
                 var height = maxHeight / files.length;
 
-                console.log(height);
-
                 files.forEach(fileName => {
                     var ctx = document.createElement('canvas');
                     ctx.setAttribute('width', maxWidth);
@@ -45,21 +43,45 @@
                         {
                             type: 'line',
                             data: {
-                                datasets: data[fileName].datasets.map(d => ({...d, lineTension: 0}))
+                                datasets: data[fileName].datasets.map(d => ({
+                                    ...d,
+                                    lineTension: 0,
+                                    fill: false
+                                }))
                             },
                             options: {
                                 title: {
                                     display: true,
-                                    text: fileName
+                                    text: fileName,
+                                    position: 'left'
+                                },
+                                legend: {
+                                    position: 'left'
                                 },
                                 scales: {
-                                    xAxes: [{
-                                        type: 'time',
-                                        time: {
-                                            parser: 'UTC',
-                                            unit: 'minute'
+                                    xAxes: [
+                                        {
+                                            type: 'time',
+                                            time: {
+                                                parser: 'UTC',
+                                                unit: 'minute'
+                                            },
+                                            distribution: 'series'
                                         }
-                                    }]
+                                    ],
+                                    yAxes: [
+                                        {
+                                            ticks: {
+                                                callback: (value, index, array) => {
+                                                    return (value > 1000)
+                                                        ? (value > 1000000
+                                                            ? value / 1000000 + 'M'
+                                                            : value / 1000 + 'K')
+                                                        : value;
+                                                }
+                                            }
+                                        }
+                                    ]
                                 }
                             }
                         });

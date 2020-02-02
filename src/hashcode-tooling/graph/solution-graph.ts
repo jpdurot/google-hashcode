@@ -7,9 +7,9 @@ import * as path from 'path';
 export class SolutionGraph {
   private regexp = new RegExp(/^([^.]+)\.in_([^.]+)\.out$/);
 
-  constructor(private outputDir: string) {}
+  constructor(private outputDir: string, private resultPath: string) {}
 
-  parseFiles(resultPath = 'src/competitions/2020-training/output'): void {
+  parseFiles(): void {
     const datasets: {
       [filename: string]: {
         datasets: {
@@ -23,7 +23,7 @@ export class SolutionGraph {
       };
     } = {};
 
-    const files = fs.readdirSync(resultPath);
+    const files = fs.readdirSync(this.resultPath);
 
     files.forEach(filename => {
       const parsed = filename.match(this.regexp);
@@ -40,7 +40,7 @@ export class SolutionGraph {
       const improvementsCount = elements[i++];
       const generator = elements[i++];
 
-      const creationTime = fs.statSync(path.join(resultPath, filename)).ctime.getTime();
+      const creationTime = fs.statSync(path.join(this.resultPath, filename)).ctime.getTime();
 
       datasets[inputName] = datasets[inputName] || {
         datasets: {}
@@ -70,22 +70,29 @@ export class SolutionGraph {
       };
     } = {};
 
+    const colors = ['red', 'green', 'blue', 'orange', 'black'];
+    let iColor = 0;
+    let dataSetColors: { [dataset: string]: string } = {};
+
+    const getColor = (dataset: string) => {
+      dataSetColors[dataset] = dataSetColors[dataset] || colors[iColor++];
+      return dataSetColors[dataset];
+    };
+
     for (let inputFile in datasets) {
       let dataset1 = datasets[inputFile];
 
-      const colors = ['red', 'green', 'blue', 'orange', 'black'];
-      let iColor = 0;
-
       data[inputFile] = {
-        datasets: Object.keys(dataset1.datasets).map(key => {
-          const data = dataset1.datasets[key].data.sort((a, b) => a.x - b.x);
-          console.log(data);
-          return {
-            label: key,
-            data: data,
-            borderColor: colors[iColor++]
-          };
-        })
+        datasets: Object.keys(dataset1.datasets)
+          .map(key => {
+            const data = dataset1.datasets[key].data.sort((a, b) => a.x - b.x);
+            return {
+              label: key,
+              data: data,
+              borderColor: getColor(key)
+            };
+          })
+          .sort((a, b) => a.label.localeCompare(b.label))
       };
     }
 
@@ -93,4 +100,5 @@ export class SolutionGraph {
   }
 }
 
-new SolutionGraph('src/hashcode-tooling/graph').parseFiles();
+// TODO take competition path as param, make outputDir depend on the script's path
+new SolutionGraph('src/hashcode-tooling/graph', 'src/competitions/2020-training/output').parseFiles();
