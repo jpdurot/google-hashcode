@@ -1,5 +1,5 @@
 import { Input } from './input';
-import { OutputString } from '../../../../hashcode-tooling/OutputString';
+import { OutputString } from '../../../../hashcode-tooling/output-string';
 import { BaseSolution } from '../../../../hashcode-tooling/base-solution';
 import { ISolution } from '../../../../hashcode-tooling/i-solution';
 
