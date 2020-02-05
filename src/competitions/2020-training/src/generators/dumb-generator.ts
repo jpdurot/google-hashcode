@@ -1,8 +1,8 @@
 import { ISolutionGenerator } from '../../../../hashcode-tooling/i-solution-generator';
-import { Input } from '../models/input';
-import { Output } from '../models/output';
+import { AvailablePizzaState } from '../models/availablePizzaState';
+import { PizzaOrder } from '../models/pizzaOrder';
 
-export class DumbGenerator implements ISolutionGenerator<Input, Output> {
+export class DumbGenerator implements ISolutionGenerator<AvailablePizzaState, PizzaOrder> {
   static NAME = 'Dumb';
   hasNextGenerator: boolean = true;
 
@@ -10,13 +10,13 @@ export class DumbGenerator implements ISolutionGenerator<Input, Output> {
     return DumbGenerator.NAME;
   }
 
-  next(preConditions: Input): Output {
+  next(preConditions: AvailablePizzaState): PizzaOrder {
     // This is one shot
     this.hasNextGenerator = false;
 
-    const solution = new Output(preConditions);
+    const solution = new PizzaOrder(preConditions);
 
-    for (let i = 0; i < preConditions.pizzaTypes.keys().length; i++) {
+    for (let i = 0; i < solution.state.availablePizzas.keys().length; i++) {
       solution.takePizza(i);
 
       if (!solution.isValid()) {

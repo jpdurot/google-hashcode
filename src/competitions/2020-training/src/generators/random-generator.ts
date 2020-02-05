@@ -1,10 +1,10 @@
 import { ISolutionGenerator } from '../../../../hashcode-tooling/i-solution-generator';
-import { Input } from '../models/input';
-import { Output } from '../models/output';
+import { AvailablePizzaState } from '../models/availablePizzaState';
+import { PizzaOrder } from '../models/pizzaOrder';
 import * as Collections from 'typescript-collections';
-import { randomInArray, randIntMax } from '../../../../hashcode-tooling/utils';
+import { randomInArray } from '../../../../hashcode-tooling/utils';
 
-export class RandomGenerator implements ISolutionGenerator<Input, Output> {
+export class RandomGenerator implements ISolutionGenerator<AvailablePizzaState, PizzaOrder> {
   static NAME = 'Random';
   hasNextGenerator: boolean = true;
 
@@ -12,19 +12,14 @@ export class RandomGenerator implements ISolutionGenerator<Input, Output> {
     return RandomGenerator.NAME;
   }
 
-  next(preConditions: Input): Output {
+  next(preConditions: AvailablePizzaState): PizzaOrder {
     // This is one shot
     this.hasNextGenerator = false;
 
-    const solution = new Output(preConditions);
+    const solution = new PizzaOrder(preConditions);
 
-    const availablePizzaTypes = new Collections.Set<number>();
-    preConditions.pizzaTypes.forEach((type, i) => availablePizzaTypes.add(i));
-
-    // console.log(`Available types: ${availablePizzaTypes.size()}`);
-
-    while (availablePizzaTypes.size() != 0) {
-      const i = randomInArray(availablePizzaTypes.toArray());
+    while (solution.state.availablePizzas.size() != 0) {
+      const i = randomInArray(solution.state.availablePizzas.keys());
 
       //console.log(availablePizzaTypes.keys());
 

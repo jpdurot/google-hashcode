@@ -1,5 +1,5 @@
 import { SolutionFinder } from '../../../hashcode-tooling/solution-finder';
-import { Input } from './models/input';
+import { AvailablePizzaState } from './models/availablePizzaState';
 import { DumbGenerator } from './generators/dumb-generator';
 import { RandomGenerator } from './generators/random-generator';
 import commandLineArgs = require('command-line-args');
@@ -21,7 +21,7 @@ const options = commandLineArgs(optionDefinitions);
 options.generator.forEach((gName: string) =>
   SolutionFinder.launchOnSeveralFiles(
     inputFiles,
-    scanner => new Input(scanner),
+    scanner => new AvailablePizzaState(scanner),
     () => GeneratorFactory.from(gName)
   )
 );

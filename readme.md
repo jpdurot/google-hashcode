@@ -18,3 +18,10 @@ dist/competitions/2020-training/output
 ```
 
 ### Update graphs
+```shell script
+node dist/hashcode-tooling/graph/solution-graph.js
+```
+### Serve graphs
+```shell script
+npx http-server ./src/hashcode-tooling/graph
+```
