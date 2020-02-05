@@ -2,6 +2,7 @@
 
 ## How to
 
+### Build solution
 Launch one of the competitions, for example `2020-training`, by providing one or multiple generator names. Ex:
 ```shell script
 node dist/competitions/2020-training/src/index.js -g random
@@ -15,3 +16,5 @@ and write solution files to
 ```shell script
 dist/competitions/2020-training/output
 ```
+
+### Update graphs

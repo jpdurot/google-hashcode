@@ -28,14 +28,11 @@ export class RandomGenerator implements ISolutionGenerator<Input, Output> {
 
       //console.log(availablePizzaTypes.keys());
 
-      solution.addOrder(i);
+      solution.takePizza(i);
 
       if (!solution.isValid()) {
-        solution.rollback();
+        solution.removePizza(i);
         break;
-      } else {
-        // TODO this could be done inside the Output object
-        availablePizzaTypes.remove(i);
       }
     }
 

@@ -16,11 +16,11 @@ export class DumbGenerator implements ISolutionGenerator<Input, Output> {
 
     const solution = new Output(preConditions);
 
-    for (let i = 0; i < preConditions.pizzaTypes.length; i++) {
-      solution.addOrder(i);
+    for (let i = 0; i < preConditions.pizzaTypes.keys().length; i++) {
+      solution.takePizza(i);
 
       if (!solution.isValid()) {
-        solution.rollback();
+        solution.removePizza(i);
         break;
       }
     }
