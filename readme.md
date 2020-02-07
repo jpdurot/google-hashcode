@@ -5,31 +5,42 @@
 ### Prerequisites
 Use npm version 12
 
+### Configure competition
+`package.json`: update exercise name
+
+```json
+{
+  "currentExercise": "2020-training",
+}
+```
+
 ### Build solution
 Start TS Code watch (build automatically when code changes)
 ```shell script
 npm run watch
 ```
 
-Launch one of the competitions, for example `2020-training`, by providing one or multiple generator names. Ex:
+### Update graphs
 ```shell script
-npm run training2020 -- -g random
+npm run watch:graph
 ```
 
-Will read input files from
+### Serve graphs
+```shell script
+npx http-server ./src/hashcode-tooling/graph
+```
+
+### RUN!!
+Launch the calculation, providing the generator name
+```shell script
+npm run go -- -g random
+```
+
+If competition is set to `2020-training`, will read input files from:
 ```shell script
 dist/competitions/2020-training/input
 ```
 and write solution files to
 ```shell script
 dist/competitions/2020-training/output
-```
-
-### Update graphs
-```shell script
-node dist/hashcode-tooling/graph/solution-graph.js
-```
-### Serve graphs
-```shell script
-npx http-server ./src/hashcode-tooling/graph
 ```

@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
+  "currentExercise": "2020-training",
   "scripts": {
     "watch": "concurrently -k -n \"Typescript\" -p \"[{name}]\" -c \"blue\" \"tsc --watch\" ",
-    "training2020": "node dist/competitions/2020-training/src/index.js",
+    "watch:graph": "nodemon --watch src/competitions/${npm_package_currentExercise}/output -e out dist/hashcode-tooling/graph/solution-graph.js ${npm_package_currentExercise}",
+    "go": "node dist/competitions/${npm_package_currentExercise}/src/index.js",
     "prettier": "prettier --write \"./src/**/*.ts\""
   },
   "author": "",

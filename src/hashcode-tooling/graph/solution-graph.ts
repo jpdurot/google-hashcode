@@ -96,9 +96,14 @@ export class SolutionGraph {
       };
     }
 
-    fs.writeFileSync(`${this.outputDir}/graph_data.json`, JSON.stringify(data, null, 2));
+    let graphFileName = `${this.outputDir}/graph_data.json`;
+    fs.writeFileSync(graphFileName, JSON.stringify(data, null, 2));
+    console.log(`Updated: ${graphFileName}`);
+    console.log(`From: ${this.resultPath}`);
   }
 }
 
+const competitionName = process.argv.slice(2);
+
 // TODO take competition path as param, make outputDir depend on the script's path
-new SolutionGraph('src/hashcode-tooling/graph', 'src/competitions/2020-training/output').parseFiles();
+new SolutionGraph('src/hashcode-tooling/graph', `src/competitions/${competitionName}/output`).parseFiles();
