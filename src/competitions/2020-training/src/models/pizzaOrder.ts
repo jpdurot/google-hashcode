@@ -2,6 +2,7 @@ import { AvailablePizzaState } from './availablePizzaState';
 import { OutputString } from '../../../../hashcode-tooling/output-string';
 import { ISolution } from '../../../../hashcode-tooling/i-solution';
 import { Dictionary } from 'typescript-collections';
+import _ = require('lodash');
 
 export class PizzaOrder implements ISolution<AvailablePizzaState> {
   public orderedPizzas: Dictionary<number, number> = new Dictionary<number, number>();
@@ -16,7 +17,9 @@ export class PizzaOrder implements ISolution<AvailablePizzaState> {
     this._score = newScore;
   }
 
-  constructor(public state: AvailablePizzaState) {}
+  constructor(public state: AvailablePizzaState) {
+    this.state = _.cloneDeep(state);
+  }
 
   takePizza(pizzaType: number): void {
     // Note: could be more simple if score is not cached but calculated at each call to get score(), wouldn't have

@@ -38,7 +38,7 @@ export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreCondi
         this.bestScore = score;
         this.bestSolution = result;
         this.improvementsCount++;
-        console.log(`[${this.generator.name}] New solution found for ${this.shortInputName} - Score = ${score}`);
+        console.log(`[${this.generator.name}] - ${this.shortInputName} New BEST = ${score}`);
         this.writeSolution();
       }
     }
