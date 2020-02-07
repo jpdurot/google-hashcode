@@ -2,6 +2,9 @@
 
 ## How to
 
+### Prerequisites
+Use npm version 12
+
 ### Build solution
 Launch one of the competitions, for example `2020-training`, by providing one or multiple generator names. Ex:
 ```shell script
