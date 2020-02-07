@@ -6,9 +6,14 @@
 Use npm version 12
 
 ### Build solution
+Start TS Code watch (build automatically when code changes)
+```shell script
+npm run watch
+```
+
 Launch one of the competitions, for example `2020-training`, by providing one or multiple generator names. Ex:
 ```shell script
-node dist/competitions/2020-training/src/index.js -g random
+npm run training2020 -- -g random
 ```
 
 Will read input files from
