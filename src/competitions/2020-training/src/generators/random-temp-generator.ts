@@ -7,7 +7,7 @@ import _ = require('lodash');
 export class RandomGeneratorV2Temp implements ISolutionGenerator<AvailablePizzaState, PizzaOrder> {
   static NAME = 'Random2Temp';
   iterations = 0;
-  static MAX_ITERATIONS = 500;
+  static MAX_ITERATIONS = 10000;
 
   bestSolution: PizzaOrder | undefined = undefined;
 
@@ -18,8 +18,7 @@ export class RandomGeneratorV2Temp implements ISolutionGenerator<AvailablePizzaS
   next(preConditions: AvailablePizzaState): PizzaOrder {
     // number that varies from 1 to 0 describing how far away we want to explore
     this.iterations++;
-    console.log(Math.sqrt(this.iterations));
-    const temperature = 0.2 / Math.sqrt(this.iterations);
+    const temperature = 0.5 / this.iterations;
 
     if (!this.bestSolution) {
       const solution = new PizzaOrder(preConditions);
@@ -38,10 +37,7 @@ export class RandomGeneratorV2Temp implements ISolutionGenerator<AvailablePizzaS
     } else {
       // Start from solution
       let newSolution = _.cloneDeep(this.bestSolution);
-      let numberOfChangedPizzas = newSolution.orderedPizzas.keys().length * temperature;
-      console.log(
-        `Iterations: ${this.iterations}, Temperature: ${temperature}, Number of changed pizzas: ${numberOfChangedPizzas}`
-      );
+      let numberOfChangedPizzas = 5000 * temperature + 1;
 
       for (let k = 0; k < numberOfChangedPizzas; k++) {
         const j = randomInArray(newSolution.orderedPizzas.keys());
