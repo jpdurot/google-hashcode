@@ -6,6 +6,7 @@ import { RandomGenerator } from './random-generator';
 import { RandomGeneratorV2 } from './random-v2-generator';
 import { RandomParallelGenerator } from './random-parallel-generator';
 import { RandomGeneratorV2Temp } from './random-temp-generator';
+import { RandomParallelTempGenerator } from './random-parallel-temp-generator';
 
 export class GeneratorFactory {
   static knownGenerators = {
@@ -13,7 +14,8 @@ export class GeneratorFactory {
     [RandomGenerator.NAME.toUpperCase()]: () => new RandomGenerator(),
     [RandomGeneratorV2.NAME.toUpperCase()]: () => new RandomGeneratorV2(),
     [RandomParallelGenerator.NAME.toUpperCase()]: () => new RandomParallelGenerator(),
-    [RandomGeneratorV2Temp.NAME.toUpperCase()]: () => new RandomGeneratorV2Temp()
+    [RandomGeneratorV2Temp.NAME.toUpperCase()]: () => new RandomGeneratorV2Temp(),
+    [RandomParallelTempGenerator.NAME.toUpperCase()]: () => new RandomParallelTempGenerator()
   };
 
   public static from(name: string): ISolutionGenerator<AvailablePizzaState, PizzaOrder> {
