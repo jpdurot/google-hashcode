@@ -22,12 +22,13 @@ npm run watch
 
 ### Update graphs
 ```shell script
-npm run watch:graph
+npm run graph:watch
 ```
+(and open http://127.0.0.1:8080)
 
 ### Serve graphs
 ```shell script
-npx http-server ./src/hashcode-tooling/graph
+npm run graph:serve
 ```
 
 ### RUN!!

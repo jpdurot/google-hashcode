@@ -6,7 +6,8 @@
   "currentExercise": "2020-training",
   "scripts": {
     "watch": "concurrently -k -n \"Typescript\" -p \"[{name}]\" -c \"blue\" \"tsc --watch\" ",
-    "watch:graph": "nodemon --watch src/competitions/${npm_package_currentExercise}/output -e out dist/hashcode-tooling/graph/solution-graph.js ${npm_package_currentExercise}",
+    "graph:watch": "nodemon --watch src/competitions/${npm_package_currentExercise}/output -e out dist/hashcode-tooling/graph/solution-graph.js ${npm_package_currentExercise}",
+    "graph:serve": "http-server ./src/hashcode-tooling/graph",
     "go": "node dist/competitions/${npm_package_currentExercise}/src/index.js",
     "prettier": "prettier --write \"./src/**/*.ts\""
   },
