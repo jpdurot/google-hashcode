@@ -7,7 +7,7 @@ export class SolutionGraph {
   constructor(private outputDir: string, private resultPath: string) {}
 
   parseFiles(): void {
-    const datasets: {
+    const datasetPerInputs: {
       [filename: string]: {
         datasets: {
           [generatorName: string]: {
@@ -22,23 +22,40 @@ export class SolutionGraph {
 
     const files = readFilesFrom(this.resultPath);
 
+    const maxScorePerInput: {
+      [inputName: string]: {
+        score: number;
+        generator: string;
+      };
+    } = {};
+
     files.forEach(file => {
       const output = OutputFile.fromOutputFileName(path.join(this.resultPath, file.name));
 
-      datasets[output.inputName] = datasets[output.inputName] || {
+      // Init
+      datasetPerInputs[output.inputName] = datasetPerInputs[output.inputName] || {
         datasets: {}
       };
 
-      datasets[output.inputName].datasets[output.generatorName] = datasets[output.inputName].datasets[
+      datasetPerInputs[output.inputName].datasets[output.generatorName] = datasetPerInputs[output.inputName].datasets[
         output.generatorName
       ] || {
         name: output.generatorName,
         data: []
       };
-      datasets[output.inputName].datasets[output.generatorName].data.push({
+
+      // Update
+      datasetPerInputs[output.inputName].datasets[output.generatorName].data.push({
         x: output.modificationTime as number,
         y: output.score
       });
+
+      if (maxScorePerInput[output.inputName]?.score || 0 < output.score) {
+        maxScorePerInput[output.inputName] = {
+          score: output.score,
+          generator: output.generatorName
+        };
+      }
 
       //console.log([inputName, score, generator, creationTime]);
     });
@@ -64,15 +81,20 @@ export class SolutionGraph {
       return dataSetColors[dataset];
     };
 
-    for (let inputFile in datasets) {
-      let dataset1 = datasets[inputFile];
+    for (let inputFile in datasetPerInputs) {
+      let dataset1 = datasetPerInputs[inputFile];
 
       data[inputFile] = {
         datasets: Object.keys(dataset1.datasets)
           .map(key => {
             const data = dataset1.datasets[key].data.sort((a, b) => a.x - b.x);
+            let label = key;
+            if (maxScorePerInput[inputFile].generator == key) {
+              // This generator has the maximum
+              label += ` [${maxScorePerInput[inputFile].score}]`;
+            }
             return {
-              label: key,
+              label: label,
               data: data,
               borderColor: getColor(key)
             };
