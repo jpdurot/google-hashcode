@@ -3,10 +3,15 @@ import { OutputString } from '../../../../hashcode-tooling/output-string';
 import { ISolution } from '../../../../hashcode-tooling/i-solution';
 import { Dictionary } from 'typescript-collections';
 import _ = require('lodash');
+import { deserialize, serialize } from 'v8';
 
 export class PizzaOrder implements ISolution<AvailablePizzaState> {
   public orderedPizzas: Dictionary<number, number> = new Dictionary<number, number>();
   private _score: number = 0;
+
+  constructor(public state: AvailablePizzaState) {
+    this.state = _.cloneDeep(state);
+  }
 
   get score() {
     // Note the score is calculated once, not at each call
@@ -15,10 +20,6 @@ export class PizzaOrder implements ISolution<AvailablePizzaState> {
 
   set score(newScore: number) {
     this._score = newScore;
-  }
-
-  constructor(public state: AvailablePizzaState) {
-    this.state = _.cloneDeep(state);
   }
 
   takePizza(pizzaType: number): void {
@@ -46,5 +47,13 @@ export class PizzaOrder implements ISolution<AvailablePizzaState> {
 
   isValid(): boolean {
     return this.score <= this.state.maximumSlices;
+  }
+
+  toDumpString(): string {
+    return JSON.stringify(this, null, 2);
+  }
+
+  populateFromDumpString(dumpString: string): void {
+    throw 'Not working'; // TODO would need to do some complex things for Set() property
   }
 }

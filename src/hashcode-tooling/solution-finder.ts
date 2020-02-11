@@ -4,6 +4,7 @@ import { Scanner } from './files/scanner';
 import * as fs from 'fs';
 import * as path from 'path';
 import { OutputFile } from './output-file-utils';
+import { writeFile } from './utils';
 
 export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreConditions> {
   private readonly fileScanner: Scanner;
@@ -11,6 +12,7 @@ export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreCondi
   private bestSolution: TResult | null = null;
   private improvementsCount: number = 0;
   private readonly preconditions: TPreConditions;
+  private outputPath: string;
 
   get shortInputName() {
     return path.basename(this.inputFile);
@@ -23,6 +25,8 @@ export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreCondi
   ) {
     this.fileScanner = new Scanner(inputFile);
     this.preconditions = preconditionsFactory(this.fileScanner);
+
+    this.outputPath = path.join(path.dirname(path.dirname(this.inputFile)), 'output');
 
     console.log(`Importing ${inputFile}`);
   }
@@ -48,22 +52,18 @@ export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreCondi
   writeSolution() {
     const solutionString = this.bestSolution?.toOutputString();
 
-    const outputPath = path.join(path.dirname(path.dirname(this.inputFile)), 'output');
-
-    const outputFileName = new OutputFile(
-      this.shortInputName,
-      this.bestScore,
-      this.improvementsCount,
-      this.generator.name
-    );
+    const outputFile = new OutputFile(this.shortInputName, this.bestScore, this.improvementsCount, this.generator.name);
 
     // Write file
-    fs.writeFileSync(`${outputPath}/${outputFileName.fileName()}`, solutionString);
+    writeFile(`${this.outputPath}/${outputFile.fileName()}`, solutionString);
+
+    // Write dump
+    writeFile(`${this.outputPath}/${outputFile.dumpFileName()}`, this.bestSolution?.toDumpString());
 
     // Override best file if needed
-    const bestOutputPath = path.join(outputPath, 'best');
+    const bestOutputPath = path.join(this.outputPath, 'best');
 
-    let writeFile = true;
+    let needToWriteFile = true;
 
     fs.readdirSync(bestOutputPath).forEach(file => {
       let filename = path.join(bestOutputPath, file);
@@ -74,13 +74,13 @@ export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreCondi
           fs.unlinkSync(filename);
         } else {
           // Existing score is higher
-          writeFile = false;
+          needToWriteFile = false;
         }
       }
     });
 
-    if (writeFile) {
-      fs.writeFileSync(`${bestOutputPath}/${outputFileName.fileName()}`, solutionString);
+    if (needToWriteFile) {
+      writeFile(`${bestOutputPath}/${outputFile.fileName()}`, solutionString);
     }
   }
 

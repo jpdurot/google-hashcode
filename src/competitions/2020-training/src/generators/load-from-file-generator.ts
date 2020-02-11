@@ -6,52 +6,42 @@ import * as path from 'path';
 import { OutputFile } from '../../../../hashcode-tooling/output-file-utils';
 import * as fs from 'fs';
 
-export class DumbGenerator implements ISolutionGenerator<AvailablePizzaState, PizzaOrder> {
-  static NAME = 'Dumb';
+export class LoadFromFileGenerator implements ISolutionGenerator<AvailablePizzaState, PizzaOrder> {
+  static NAME = 'LoadFromFile';
   hasNextGenerator: boolean = true;
 
   get name(): string {
-    return DumbGenerator.NAME;
+    return LoadFromFileGenerator.NAME;
   }
 
   next(preConditions: AvailablePizzaState): PizzaOrder {
     // This is one shot
     this.hasNextGenerator = false;
 
-    const solution = new PizzaOrder(preConditions);
+    const outputPath = ''; // Here get the output path from other generators
 
-    for (let i = 0; i < solution.state.availablePizzas.keys().length; i++) {
-      solution.takePizza(i);
+    readFilesFrom(outputPath).forEach(f => {
+      let fullName = path.join(outputPath, f.name);
 
-      if (!solution.isValid()) {
-        solution.removePizza(i);
-        break;
+      const info = OutputFile.fromOutputFileName(fullName);
+      if (info.isDumpFile) {
+        const content = fs.readFileSync(fullName).toString();
+
+        // TODO Not working today
+        // @ts-ignore
+        const solution = new PizzaOrder(null).fromDumpString(content);
+
+        // TODO do something with the existing solution if it is the best one (input.score)
+
+        return solution;
       }
-    }
+    });
 
-    return solution;
+    // @ts-ignore
+    return null;
   }
 
   hasNext(): boolean {
     return this.hasNextGenerator;
-  }
-
-  testDump(outputPath: string) {
-    // Not working
-    readFilesFrom(outputPath).forEach(f => {
-      let fullName = path.join(outputPath, f.name);
-      const info = OutputFile.fromOutputFileName(fullName);
-      if (info.isDumpFile) {
-        const content = fs.readFileSync(fullName).toString();
-        // @ts-ignore
-        const solution = new PizzaOrder(null).fromDumpString(content);
-
-        console.log(solution);
-
-        const outputFile = new OutputFile(info.inputName, solution.score, info.improvementsCount, info.generatorName);
-
-        writeFile(`${outputPath}/${outputFile.fileName()}.test`, solution.toOutputString());
-      }
-    });
   }
 }

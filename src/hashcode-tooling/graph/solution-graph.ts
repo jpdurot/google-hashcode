@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import { OutputFile } from '../output-file-utils';
 import * as path from 'path';
+import { readFilesFrom } from '../utils';
 
 export class SolutionGraph {
   constructor(private outputDir: string, private resultPath: string) {}
@@ -19,7 +20,7 @@ export class SolutionGraph {
       };
     } = {};
 
-    const files = fs.readdirSync(this.resultPath, { withFileTypes: true }).filter(f => !f.isDirectory());
+    const files = readFilesFrom(this.resultPath);
 
     files.forEach(file => {
       const output = OutputFile.fromOutputFileName(path.join(this.resultPath, file.name));
