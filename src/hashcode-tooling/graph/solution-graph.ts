@@ -19,10 +19,10 @@ export class SolutionGraph {
       };
     } = {};
 
-    const files = fs.readdirSync(this.resultPath);
+    const files = fs.readdirSync(this.resultPath, { withFileTypes: true }).filter(f => !f.isDirectory());
 
-    files.forEach(filename => {
-      const output = OutputFile.fromOutputFileName(path.join(this.resultPath, filename));
+    files.forEach(file => {
+      const output = OutputFile.fromOutputFileName(path.join(this.resultPath, file.name));
 
       datasets[output.inputName] = datasets[output.inputName] || {
         datasets: {}

@@ -48,7 +48,7 @@ export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreCondi
   writeSolution() {
     const solutionString = this.bestSolution?.toOutputString();
 
-    const outputPath = path.dirname(this.inputFile) + '/../output';
+    const outputPath = path.join(path.dirname(path.dirname(this.inputFile)), 'output');
 
     const outputFileName = new OutputFile(
       this.shortInputName,
@@ -57,7 +57,31 @@ export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreCondi
       this.generator.name
     );
 
+    // Write file
     fs.writeFileSync(`${outputPath}/${outputFileName.fileName()}`, solutionString);
+
+    // Override best file if needed
+    const bestOutputPath = path.join(outputPath, 'best');
+
+    let writeFile = true;
+
+    fs.readdirSync(bestOutputPath).forEach(file => {
+      let filename = path.join(bestOutputPath, file);
+      const info = OutputFile.fromOutputFileName(filename);
+      if (`${info.inputName}.in` === this.shortInputName) {
+        if (info.score < this.bestScore) {
+          console.log(`Improved best score: ${info.score} -> ${this.bestScore} - removing ${filename}`);
+          fs.unlinkSync(filename);
+        } else {
+          // Existing score is higher
+          writeFile = false;
+        }
+      }
+    });
+
+    if (writeFile) {
+      fs.writeFileSync(`${bestOutputPath}/${outputFileName.fileName()}`, solutionString);
+    }
   }
 
   static launchOnSeveralFiles<TPreConditions, TResult extends ISolution<TPreConditions>>(

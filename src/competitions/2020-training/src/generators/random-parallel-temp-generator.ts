@@ -26,7 +26,7 @@ export class RandomParallelTempGenerator implements ISolutionGenerator<Available
       //console.log(`Init ${RandomParallelGenerator.BEST_SOLUTIONS_COUNT} solutions`);
       for (let iSolution = 0; iSolution < RandomParallelTempGenerator.BEST_SOLUTIONS_COUNT; iSolution++) {
         const solution = new PizzaOrder(preConditions);
-        console.log('Building init solution');
+        console.debug('Building init solution');
         while (solution.state.availablePizzas.size() != 0) {
           const i = randomInDict(solution.state.availablePizzas);
 
@@ -37,7 +37,7 @@ export class RandomParallelTempGenerator implements ISolutionGenerator<Available
             break;
           }
         }
-        console.log('Done');
+        console.debug('Done');
 
         this.bestSolutions.push(solution);
       }
