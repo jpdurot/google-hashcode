@@ -16,7 +16,7 @@
             crossorigin="anonymous"></script>
 </head>
 
-<body>
+<body style="margin: 0;">
 <script>
     $(document).ready(() => {
         $.ajaxSetup({cache: false});
@@ -24,10 +24,13 @@
         var maxWidth = window.innerWidth;
         var maxHeight = window.innerHeight;
 
-        $.getJSON({
+        const refresh = () => $.getJSON({
             url: './graph_data.json',
             data: '',
             success: (data) => {
+                // Refresh all body all the time. Not efficient but simple
+                document.body.innerHTML = '';
+
                 var files = Object.keys(data);
 
                 var height = maxHeight / files.length;
@@ -50,6 +53,9 @@
                                 }))
                             },
                             options: {
+                                animation: {
+                                    duration: 0
+                                },
                                 title: {
                                     display: true,
                                     text: fileName,
@@ -88,6 +94,14 @@
                 });
             }
         });
+
+        const refreshRate = 1000; // 1 second
+        const loop = () => setTimeout(() => {
+            refresh();
+            loop();
+        }, refreshRate);
+
+        loop();
     });
 
 </script>
