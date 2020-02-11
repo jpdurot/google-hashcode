@@ -3,6 +3,7 @@ import { ISolutionGenerator } from './i-solution-generator';
 import { Scanner } from './files/scanner';
 import * as fs from 'fs';
 import * as path from 'path';
+import { OutputFile } from './output-file-utils';
 
 export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreConditions> {
   private readonly fileScanner: Scanner;
@@ -49,10 +50,14 @@ export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreCondi
 
     const outputPath = path.dirname(this.inputFile) + '/../output';
 
-    fs.writeFileSync(
-      `${outputPath}/${this.shortInputName}_${this.bestScore}_${this.improvementsCount}_${this.generator.name}.out`,
-      solutionString
+    const outputFileName = new OutputFile(
+      this.shortInputName,
+      this.bestScore,
+      this.improvementsCount,
+      this.generator.name
     );
+
+    fs.writeFileSync(`${outputPath}/${outputFileName.fileName()}`, solutionString);
   }
 
   static launchOnSeveralFiles<TPreConditions, TResult extends ISolution<TPreConditions>>(

@@ -1,12 +1,8 @@
-import { ISolution } from '../i-solution';
-import { ISolutionGenerator } from '../i-solution-generator';
-import { Scanner } from '../files/scanner';
 import * as fs from 'fs';
+import { OutputFile } from '../output-file-utils';
 import * as path from 'path';
 
 export class SolutionGraph {
-  private regexp = new RegExp(/^([^.]+)\.in_([^.]+)\.out$/);
-
   constructor(private outputDir: string, private resultPath: string) {}
 
   parseFiles(): void {
@@ -26,33 +22,21 @@ export class SolutionGraph {
     const files = fs.readdirSync(this.resultPath);
 
     files.forEach(filename => {
-      const parsed = filename.match(this.regexp);
-      if (!parsed) return;
+      const output = OutputFile.fromOutputFileName(path.join(this.resultPath, filename));
 
-      const inputName = parsed[1];
-      const shortName = parsed[2];
-
-      const elements = shortName.split('_');
-
-      // ${this.shortInputName}_${this.bestScore}_${this.improvementsCount}_${this.generator.name}.out
-      let i = 0;
-      const score = Number(elements[i++]);
-      const improvementsCount = elements[i++];
-      const generator = elements[i++];
-
-      const creationTime = fs.statSync(path.join(this.resultPath, filename)).ctime.getTime();
-
-      datasets[inputName] = datasets[inputName] || {
+      datasets[output.inputName] = datasets[output.inputName] || {
         datasets: {}
       };
 
-      datasets[inputName].datasets[generator] = datasets[inputName].datasets[generator] || {
-        name: generator,
+      datasets[output.inputName].datasets[output.generatorName] = datasets[output.inputName].datasets[
+        output.generatorName
+      ] || {
+        name: output.generatorName,
         data: []
       };
-      datasets[inputName].datasets[generator].data.push({
-        x: creationTime,
-        y: score
+      datasets[output.inputName].datasets[output.generatorName].data.push({
+        x: output.modificationTime as number,
+        y: output.score
       });
 
       //console.log([inputName, score, generator, creationTime]);
