@@ -2,6 +2,7 @@
     "compilerOptions": {
         "outDir": "dist",
         "target": "es5",
+        "downlevelIteration": true,
         "strict": true,
         "lib": [
             "es2019"

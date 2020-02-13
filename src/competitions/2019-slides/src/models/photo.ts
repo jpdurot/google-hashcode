@@ -1,3 +1,5 @@
-export class Photo {
-  constructor(public orientation: 'H' | 'V', public tags: Set<string>) {}
+type Orientation = 'H' | 'V';
+
+export class Photo<T extends Orientation> {
+  constructor(public orientation: T, public tags: Set<string>) {}
 }
