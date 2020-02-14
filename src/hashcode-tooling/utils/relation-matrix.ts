@@ -1,8 +1,7 @@
-import { Dictionary } from 'typescript-collections';
-import { sparse, Index } from 'mathjs';
+import { sparse } from 'mathjs';
 import { IndexDictionary } from './index-dictionary';
 
-export class RelationMatrix<ColumnType, LineType> {
+export class RelationMatrix<LineType, ColumnType> {
   columnIndexes = new IndexDictionary<ColumnType>();
   lineIndexes = new IndexDictionary<LineType>();
 
