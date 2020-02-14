@@ -1,8 +1,8 @@
 import { ISolution } from '../../../../hashcode-tooling/i-solution';
 import { SlideShowState } from './slideShowState';
 import { Slide } from './slide';
-import { difference, intersection } from './setUtil';
 import { OutputString } from '../../../../hashcode-tooling/output-string';
+import { difference, intersection } from '../../../../hashcode-tooling/utils/set-util';
 
 export class SlideShowSolution implements ISolution<SlideShowState> {
   private _score: number = 0;
