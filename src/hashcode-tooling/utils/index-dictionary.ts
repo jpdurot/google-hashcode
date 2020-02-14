@@ -4,6 +4,10 @@ export class IndexDictionary<T> {
   _dictionary = new Dictionary<T, number>();
   _lastIndex = -1;
 
+  get size(): number {
+    return this._lastIndex;
+  }
+
   get(t: T): number | undefined {
     return this._dictionary.getValue(t);
   }
