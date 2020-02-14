@@ -16,7 +16,7 @@ export class SlideShowState {
         tags.add(scanner.nextString());
       }
 
-      this.availablePhotos.push(new Photo(orientation, tags));
+      this.availablePhotos.push(new Photo(orientation, tags, i));
     }
   }
 }

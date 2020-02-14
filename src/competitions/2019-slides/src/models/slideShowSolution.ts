@@ -2,6 +2,7 @@ import { ISolution } from '../../../../hashcode-tooling/i-solution';
 import { SlideShowState } from './slideShowState';
 import { Slide } from './slide';
 import { difference, intersection } from './setUtil';
+import { OutputString } from '../../../../hashcode-tooling/output-string';
 
 export class SlideShowSolution implements ISolution<SlideShowState> {
   private _score: number = 0;
@@ -39,7 +40,16 @@ export class SlideShowSolution implements ISolution<SlideShowState> {
   isValid = () => true;
 
   toOutputString(): string {
-    throw 'Not Yet Implemented';
+    const output = new OutputString();
+    output.addValue(this.slides.length);
+
+    this.slides.forEach(slide => {
+      output.nextLine();
+
+      slide.photos.forEach(photo => output.addValue(photo.index));
+    });
+
+    return output.string;
   }
 
   toDumpString(): string {
