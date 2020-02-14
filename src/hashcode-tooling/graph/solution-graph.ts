@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import { OutputFile } from '../output-file-utils';
 import * as path from 'path';
-import { readFilesFrom } from '../utils';
+import { readFilesFrom } from '../utils/file-utils';
 
 export class SolutionGraph {
   constructor(private outputDir: string, private resultPath: string) {}

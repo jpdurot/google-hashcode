@@ -4,7 +4,7 @@ import { Scanner } from './files/scanner';
 import * as fs from 'fs';
 import * as path from 'path';
 import { OutputFile } from './output-file-utils';
-import { writeFile } from './utils';
+import { writeFile } from './utils/file-utils';
 
 export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreConditions> {
   private readonly fileScanner: Scanner;

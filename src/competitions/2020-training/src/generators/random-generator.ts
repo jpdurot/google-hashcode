@@ -2,7 +2,7 @@ import { ISolutionGenerator } from '../../../../hashcode-tooling/i-solution-gene
 import { AvailablePizzaState } from '../models/availablePizzaState';
 import { PizzaOrder } from '../models/pizzaOrder';
 import * as Collections from 'typescript-collections';
-import { randomInArray } from '../../../../hashcode-tooling/utils';
+import { randomInArray } from '../../../../hashcode-tooling/utils/random-utils';
 
 export class RandomGenerator implements ISolutionGenerator<AvailablePizzaState, PizzaOrder> {
   static NAME = 'Random';

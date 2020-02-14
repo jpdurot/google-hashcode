@@ -1,7 +1,7 @@
 import { ISolutionGenerator } from '../../../../hashcode-tooling/i-solution-generator';
 import { AvailablePizzaState } from '../models/availablePizzaState';
 import { PizzaOrder } from '../models/pizzaOrder';
-import { readFilesFrom, writeFile } from '../../../../hashcode-tooling/utils';
+import { readFilesFrom, writeFile } from '../../../../hashcode-tooling/utils/file-utils';
 import * as path from 'path';
 import { OutputFile } from '../../../../hashcode-tooling/output-file-utils';
 import * as fs from 'fs';

@@ -1,8 +1,8 @@
 import { ISolutionGenerator } from '../../../../hashcode-tooling/i-solution-generator';
 import { AvailablePizzaState } from '../models/availablePizzaState';
 import { PizzaOrder } from '../models/pizzaOrder';
-import { randomInArray, randomInDict } from '../../../../hashcode-tooling/utils';
 import _ = require('lodash');
+import { randomInArray, randomInDict } from '../../../../hashcode-tooling/utils/random-utils';
 
 export class RandomParallelTempGenerator implements ISolutionGenerator<AvailablePizzaState, PizzaOrder> {
   static NAME = 'RandomParallelTemp';
