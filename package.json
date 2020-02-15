@@ -9,6 +9,7 @@
     "graph:watch": "nodemon --watch src/competitions/${npm_package_currentExercise}/output -e out dist/hashcode-tooling/graph/solution-graph.js ${npm_package_currentExercise}",
     "graph:serve": "http-server ./src/hashcode-tooling/graph",
     "go": "node dist/competitions/${npm_package_currentExercise}/src/index.js",
+    "go:profile": "node --inspect-brk dist/competitions/${npm_package_currentExercise}/src/index.js",
     "prettier": "prettier --write \"./src/**/*.ts\""
   },
   "author": "",
