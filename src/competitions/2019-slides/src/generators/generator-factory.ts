@@ -2,10 +2,12 @@ import { ISolutionGenerator } from '../../../../hashcode-tooling/i-solution-gene
 import { DumbHorizontalGenerator } from './dumb-horizontal-generator';
 import { SlideShowState } from '../models/slideShowState';
 import { SlideShowSolution } from './../models/slideShowSolution';
+import { RandomGenerator } from './random-generator';
 
 export class GeneratorFactory {
   static knownGenerators = {
-    [DumbHorizontalGenerator.NAME.toUpperCase()]: () => new DumbHorizontalGenerator()
+    [DumbHorizontalGenerator.NAME.toUpperCase()]: () => new DumbHorizontalGenerator(),
+    [RandomGenerator.NAME.toUpperCase()]: () => new RandomGenerator()
   };
 
   public static from(name: string): ISolutionGenerator<SlideShowState, SlideShowSolution> {
