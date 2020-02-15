@@ -5,7 +5,7 @@ export class RelationMatrix<LineType, ColumnType> {
   columnIndexes = new IndexDictionary<ColumnType>();
   lineIndexes = new IndexDictionary<LineType>();
 
-  matrix = sparse();
+  matrix: number[][] = [[]];
 
   constructor() {}
 
@@ -13,44 +13,32 @@ export class RelationMatrix<LineType, ColumnType> {
     const columnIndex = this.columnIndexes.getOrAdd(column);
     const lineIndex = this.lineIndexes.getOrAdd(line);
 
-    this.matrix.set([lineIndex, columnIndex], 1);
+    this.matrix[lineIndex][columnIndex] = 1;
   }
 
   unset(line: LineType, column: ColumnType) {
     const columnIndex = this.columnIndexes.getOrAdd(column);
     const lineIndex = this.lineIndexes.getOrAdd(line);
 
-    this.matrix.set([lineIndex, columnIndex], 0);
+    this.matrix[lineIndex][columnIndex] = 0;
   }
 
   getRelation(line: LineType, column: ColumnType) {
     const columnIndex = this.columnIndexes.getOrAdd(column);
     const lineIndex = this.lineIndexes.getOrAdd(line);
 
-    return this.matrix.get([lineIndex, columnIndex]);
+    return this.matrix[lineIndex][columnIndex] ?? 0;
   }
 
   getRelatedLines(column: ColumnType) {
     const columnIndex = this.columnIndexes.getOrAdd(column);
 
-    return this.matrix.subset([0, this.lineIndexes.lastIndex], columnIndex);
+    return this.matrix.map(line => line[columnIndex]);
   }
 
   getRelatedColumns(line: LineType) {
     const lineIndex = this.lineIndexes.getOrAdd(line);
 
-    return this.matrix.subset(lineIndex, [0, this.columnIndexes.lastIndex]);
-  }
-
-  outputSizeAndStorage(): void {
-    console.log(`Size: ${this.matrix.size()}, Storage: ${this.matrix.storage()}`);
-  }
-
-  outputDensity(): void {
-    console.log(this.matrix.density());
-  }
-
-  resize(noOfLines: number, noOfColumns: number): void {
-    this.matrix.resize([noOfLines, noOfColumns]);
+    return this.matrix[lineIndex];
   }
 }

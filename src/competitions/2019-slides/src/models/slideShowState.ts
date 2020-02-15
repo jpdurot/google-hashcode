@@ -6,18 +6,26 @@ export class SlideShowState {
   verticalPhotos: Photo<'V'>[] = [];
   horizontalPhotos: Photo<'H'>[] = [];
   noOfPhotos: number;
-  //relationPhotoTags = new RelationMatrix<number, string>();
+  //relationPhotoTags: RelationMatrix<number, string>[] = [];
+
+  //relationMatricesSize = 10000;
 
   constructor(scanner: Scanner) {
     this.noOfPhotos = scanner.nextNumber();
+    /*for (let i = 0; i < this.noOfPhotos / this.relationMatricesSize; i++) {
+      this.relationPhotoTags.push(new RelationMatrix<number, string>());
+    }*/
 
     for (let i = 0; i < this.noOfPhotos; i++) {
       const orientation = scanner.nextString() as Orientation;
       const noOfTags = scanner.nextNumber();
       const tags = new Set<string>();
+
+      // console.log(i); // to have an idea of parsing progress
+
       for (let j = 0; j < noOfTags; j++) {
         const tag = scanner.nextString();
-        //this.relationPhotoTags.set(i, tag);
+        //this.relationPhotoTags[Math.floor(i / this.relationMatricesSize)].set(i, tag);
         tags.add(tag);
       }
 
@@ -31,7 +39,5 @@ export class SlideShowState {
         default:
       }
     }
-
-    //this.relationPhotoTags.outputSizeAndStorage();
   }
 }
