@@ -24,7 +24,7 @@ export class SlideShowState {
       const noOfTags = scanner.nextNumber();
       const tags = new Set<string>();
 
-      console.log(i); // to have an idea of parsing progress
+      // console.log(i); // to have an idea of parsing progress
 
       for (let j = 0; j < noOfTags; j++) {
         const tag = scanner.nextString();
