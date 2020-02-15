@@ -3,12 +3,12 @@ import { Photo, Orientation } from './photo';
 //import { RelationMatrix } from '../../../../hashcode-tooling/utils/relation-matrix';
 
 export class SlideShowState {
-  availablePhotos: Photo<Orientation>[];
+  verticalPhotos: Photo<'V'>[] = [];
+  horizontalPhotos: Photo<'H'>[] = [];
   noOfPhotos: number;
   //relationPhotoTags = new RelationMatrix<number, string>();
 
   constructor(scanner: Scanner) {
-    this.availablePhotos = [];
     this.noOfPhotos = scanner.nextNumber();
 
     for (let i = 0; i < this.noOfPhotos; i++) {
@@ -21,7 +21,15 @@ export class SlideShowState {
         tags.add(tag);
       }
 
-      this.availablePhotos.push(new Photo(orientation, tags, i));
+      switch (orientation) {
+        case 'H':
+          this.horizontalPhotos.push(new Photo(orientation, tags, i));
+          break;
+        case 'V':
+          this.verticalPhotos.push(new Photo(orientation, tags, i));
+          break;
+        default:
+      }
     }
 
     //this.relationPhotoTags.outputSizeAndStorage();

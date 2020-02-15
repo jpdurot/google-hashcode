@@ -1,11 +1,11 @@
 import { ISolutionGenerator } from '../../../../hashcode-tooling/i-solution-generator';
-import { DumbGenerator } from './dumb-generator';
+import { DumbHorizontalGenerator } from './dumb-horizontal-generator';
 import { SlideShowState } from '../models/slideShowState';
 import { SlideShowSolution } from './../models/slideShowSolution';
 
 export class GeneratorFactory {
   static knownGenerators = {
-    [DumbGenerator.NAME.toUpperCase()]: () => new DumbGenerator()
+    [DumbHorizontalGenerator.NAME.toUpperCase()]: () => new DumbHorizontalGenerator()
   };
 
   public static from(name: string): ISolutionGenerator<SlideShowState, SlideShowSolution> {

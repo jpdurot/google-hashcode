@@ -12,7 +12,7 @@
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}\\dist\\competitions\\2019-slides\\src\\index.js",
-            "args": ["-g", "dumb"],
+            "args": ["-g", "dumbhorizontal"],
             "outFiles": [
                 "${workspaceFolder}/dist/**/*.js"
             ]

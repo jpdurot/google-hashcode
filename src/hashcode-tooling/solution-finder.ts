@@ -8,7 +8,7 @@ import { writeFile } from './utils/file-utils';
 
 export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreConditions> {
   private readonly fileScanner: Scanner;
-  private bestScore: number = Number.MIN_VALUE;
+  private bestScore: number = Number.NEGATIVE_INFINITY;
   private bestSolution: TResult | null = null;
   private improvementsCount: number = 0;
   private readonly preconditions: TPreConditions;
@@ -34,7 +34,7 @@ export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreCondi
   findSolution(): void {
     this.bestSolution = null;
     this.improvementsCount = 0;
-    this.bestScore = Number.MIN_VALUE;
+    this.bestScore = Number.NEGATIVE_INFINITY;
     while (this.generator.hasNext()) {
       const result: TResult = this.generator.next(this.preconditions);
       const score: number = result.score;
