@@ -23,12 +23,12 @@ export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreCondi
     preconditionsFactory: (scanner: Scanner) => TPreConditions,
     private generator: ISolutionGenerator<TPreConditions, TResult>
   ) {
+    console.log(`Importing ${inputFile}`);
+
     this.fileScanner = new Scanner(inputFile);
     this.preconditions = preconditionsFactory(this.fileScanner);
 
     this.outputPath = path.join(path.dirname(path.dirname(this.inputFile)), 'output');
-
-    console.log(`Importing ${inputFile}`);
   }
 
   findSolution(): void {

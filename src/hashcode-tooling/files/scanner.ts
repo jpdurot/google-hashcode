@@ -14,8 +14,6 @@ export class Scanner {
       .split(Scanner.lineDelimiter)
       .map(line => line.split(Scanner.colDelimiter))
       .flat();
-
-    console.log(this.elements.length);
   }
 
   hasNext(): boolean {

@@ -41,4 +41,8 @@ export class RelationMatrix<LineType, ColumnType> {
 
     this.matrix.subset(lineIndex, [0, this.columnIndexes.lastIndex]);
   }
+
+  outputSizeAndStorage(): void {
+    console.log(`Size: ${this.matrix.size()}, Storage: ${this.matrix.storage()}`);
+  }
 }

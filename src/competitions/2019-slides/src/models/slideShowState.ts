@@ -1,11 +1,11 @@
 import { Scanner } from '../../../../hashcode-tooling/files/scanner';
 import { Photo, Orientation } from './photo';
-import { RelationMatrix } from '../../../../hashcode-tooling/utils/relation-matrix';
+//import { RelationMatrix } from '../../../../hashcode-tooling/utils/relation-matrix';
 
 export class SlideShowState {
   availablePhotos: Photo<Orientation>[];
   noOfPhotos: number;
-  relationPhotoTags = new RelationMatrix<number, string>();
+  //relationPhotoTags = new RelationMatrix<number, string>();
 
   constructor(scanner: Scanner) {
     this.availablePhotos = [];
@@ -17,11 +17,13 @@ export class SlideShowState {
       const tags = new Set<string>();
       for (let j = 0; j < noOfTags; j++) {
         const tag = scanner.nextString();
-        this.relationPhotoTags.set(i, tag);
+        //this.relationPhotoTags.set(i, tag);
         tags.add(tag);
       }
 
       this.availablePhotos.push(new Photo(orientation, tags, i));
     }
+
+    //this.relationPhotoTags.outputSizeAndStorage();
   }
 }

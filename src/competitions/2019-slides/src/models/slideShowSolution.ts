@@ -3,6 +3,7 @@ import { SlideShowState } from './slideShowState';
 import { Slide } from './slide';
 import { OutputString } from '../../../../hashcode-tooling/output-string';
 import { difference, intersection } from '../../../../hashcode-tooling/utils/set-util';
+import { Photo, Orientation } from './photo';
 
 export class SlideShowSolution implements ISolution<SlideShowState> {
   private _score: number = 0;
@@ -46,7 +47,7 @@ export class SlideShowSolution implements ISolution<SlideShowState> {
     this.slides.forEach(slide => {
       output.nextLine();
 
-      slide.photos.forEach(photo => output.addValue(photo.index));
+      slide.photos.forEach((photo: Photo<Orientation>) => output.addValue(photo.index));
     });
 
     return output.string;

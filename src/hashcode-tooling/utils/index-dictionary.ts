@@ -13,9 +13,8 @@ export class IndexDictionary<T> {
   }
 
   add(t: T): number {
-    let index = this._lastIndex++;
-    this._dictionary.setValue(t, index);
-    return index;
+    this._dictionary.setValue(t, ++this._lastIndex);
+    return this._lastIndex;
   }
 
   getOrAdd(t: T): number {
