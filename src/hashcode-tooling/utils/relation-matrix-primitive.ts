@@ -1,6 +1,6 @@
 import { IndexDictionary } from './index-dictionary';
 
-export class RelationMatrix<LineType, ColumnType> {
+export class PrimitiveRelationMatrix<LineType, ColumnType> {
   columnIndexes = new IndexDictionary<ColumnType>();
   lineIndexes = new IndexDictionary<LineType>();
 
@@ -12,6 +12,9 @@ export class RelationMatrix<LineType, ColumnType> {
     const columnIndex = this.columnIndexes.getOrAdd(column);
     const lineIndex = this.lineIndexes.getOrAdd(line);
 
+    if (!this.matrix[lineIndex]) {
+      this.matrix[lineIndex] = [];
+    }
     this.matrix[lineIndex][columnIndex] = 1;
   }
 
