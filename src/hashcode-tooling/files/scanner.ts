@@ -4,6 +4,7 @@ export class Scanner {
   static lineDelimiter: string = '\n';
   static colDelimiter = ' ';
 
+  private currentIndex = -1;
   private elements: Array<string>;
 
   constructor(fileName: string) {
@@ -13,17 +14,23 @@ export class Scanner {
       .split(Scanner.lineDelimiter)
       .map(line => line.split(Scanner.colDelimiter))
       .flat();
+
+    console.log(this.elements.length);
   }
 
   hasNext(): boolean {
-    return this.elements.length > 0;
+    return this.currentIndex < this.elements.length;
   }
 
   nextString(): string {
-    return this.elements.shift() + '';
+    return this.elements[++this.currentIndex];
+  }
+
+  nextInt(): number {
+    return ~~this.elements[++this.currentIndex];
   }
 
   nextNumber(): number {
-    return <any>this.elements.shift() * 1;
+    return Number(this.elements[++this.currentIndex]);
   }
 }
