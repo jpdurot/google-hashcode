@@ -1,5 +1,4 @@
 node_modules/
-.vscode/
 dist/
 /src/competitions/**/output/
 /src/hashcode-tooling/graph/graph_data.json
