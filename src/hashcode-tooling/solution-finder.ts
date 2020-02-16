@@ -61,26 +61,29 @@ export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreCondi
     writeFile(`${this.outputPath}/${outputFile.dumpFileName()}`, this.bestSolution?.toDumpString());
 
     // Override best file if needed
-    const bestOutputPath = path.join(this.outputPath, 'best');
-
-    let needToWriteFile = true;
-
-    fs.readdirSync(bestOutputPath).forEach(file => {
-      let filename = path.join(bestOutputPath, file);
-      const info = OutputFile.fromOutputFileName(filename);
-      if (`${info.inputName}.in` === this.shortInputName) {
-        if (info.score < this.bestScore) {
-          console.log(`Improved best score: ${info.score} -> ${this.bestScore} - removing ${filename}`);
-          fs.unlinkSync(filename);
-        } else {
-          // Existing score is higher
-          needToWriteFile = false;
+    try {
+      const bestOutputPath = path.join(this.outputPath, 'best');
+      let needToWriteFile = true;
+      fs.readdirSync(bestOutputPath).forEach(file => {
+        let filename = path.join(bestOutputPath, file);
+        const info = OutputFile.fromOutputFileName(filename);
+        if (`${info.inputName}.in` === this.shortInputName) {
+          if (info.score < this.bestScore) {
+            console.log(`Improved best score: ${info.score} -> ${this.bestScore} - removing ${filename}`);
+            fs.unlinkSync(filename);
+          } else {
+            // Existing score is higher
+            needToWriteFile = false;
+          }
         }
-      }
-    });
+      });
 
-    if (needToWriteFile) {
-      writeFile(`${bestOutputPath}/${outputFile.fileName()}`, solutionString);
+      if (needToWriteFile) {
+        writeFile(`${bestOutputPath}/${outputFile.fileName()}`, solutionString);
+      }
+    } catch (e) {
+      console.error('Error writing file in "/best" directory!');
+      console.error(e);
     }
   }
 

@@ -5,5 +5,6 @@ export function readFilesFrom(dirName: string) {
 }
 
 export const writeFile = (fileName: string, content: string | undefined) => {
-  fs.writeFile(fileName, content, () => console.log(`Written: ${fileName}`));
+  fs.writeFileSync(fileName, content);
+  console.log(`Written: ${fileName}`);
 };
