@@ -2,6 +2,8 @@ import { Scanner } from '../../../../hashcode-tooling/files/scanner';
 import { Photo, Orientation } from './photo';
 //import { RelationMatrix } from '../../../../hashcode-tooling/utils/relation-matrix';
 import { PrimitiveRelationMatrix } from '../../../../hashcode-tooling/utils/relation-matrix-primitive';
+import { RelationMatrix } from '../../../../hashcode-tooling/utils/relation-matrix';
+import { Logger } from '../../../../hashcode-tooling/utils/logger';
 
 export class SlideShowState {
   allPhotos: Photo<Orientation>[] = [];
@@ -9,7 +11,7 @@ export class SlideShowState {
   horizontalPhotos: Photo<'H'>[] = [];
   noOfPhotos: number;
   //relationPhotoTags: RelationMatrix<number, string>[] = [];
-  relationPhotoTags = new PrimitiveRelationMatrix<number, string>();
+  relationPhotoTags = new RelationMatrix<number, string>();
 
   //relationMatricesSize = 10000;
 
@@ -19,18 +21,22 @@ export class SlideShowState {
       this.relationPhotoTags.push(new RelationMatrix<number, string>());
     }*/
 
+    let percent = this.noOfPhotos / 100;
+
     for (let i = 0; i < this.noOfPhotos; i++) {
       const orientation = scanner.nextString() as Orientation;
       const noOfTags = scanner.nextNumber();
-      const tags = new Set<string>();
 
-      // console.log(i); // to have an idea of parsing progress
+      const tags = new Set<string>();
+      if (i % percent == 0) {
+        Logger.printLn(`${i / percent}%`);
+      }
 
       for (let j = 0; j < noOfTags; j++) {
         const tag = scanner.nextString();
         //this.relationPhotoTags[Math.floor(i / this.relationMatricesSize)].set(i, tag);
         this.relationPhotoTags.set(i, tag);
-        tags.add(tag);
+        //tags.add(tag);
       }
 
       const photo = new Photo(
@@ -48,7 +54,6 @@ export class SlideShowState {
           break;
         default:
       }
-      this.allPhotos.push(photo);
     }
   }
 }
