@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
-  "currentExercise": "2020-training",
+  "currentExercise": "2019-slides",
   "scripts": {
     "watch": "concurrently -k -n \"Typescript\" -p \"[{name}]\" -c \"blue\" \"tsc --watch\" ",
     "graph:watch": "nodemon --watch src/competitions/${npm_package_currentExercise}/output -e out dist/hashcode-tooling/graph/solution-graph.js ${npm_package_currentExercise}",
