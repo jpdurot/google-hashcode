@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 export class OutputFile {
-  private static regexp = new RegExp(/^([^.]+)\.in_([^.]+)\.out(.dump)?$/);
+  private static regexp = new RegExp(/^([^.]+)\.[^_]*_([^.]+)\.out(.dump)?$/);
 
   constructor(
     public inputName: string,
