@@ -97,6 +97,10 @@ export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreCondi
     );
 
     // TODO: run all solution finders in parallel (worker threads ??)
-    solutionFinders.forEach(finder => finder.findSolution());
+    solutionFinders.forEach(finder => {
+      console.log(`${finder.shortInputName} ------------------------------------------------ START`);
+      finder.findSolution();
+      console.log(`${finder.shortInputName} ------------------------------------------------   END`);
+    });
   }
 }
