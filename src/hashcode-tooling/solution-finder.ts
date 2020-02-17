@@ -5,6 +5,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { OutputFile } from './output-file-utils';
 import { writeFile } from './utils/file-utils';
+import { LEVEL, Logger } from './utils/logger';
 
 export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreConditions> {
   private readonly fileScanner: Scanner;
@@ -23,12 +24,14 @@ export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreCondi
     preconditionsFactory: (scanner: Scanner) => TPreConditions,
     private generator: ISolutionGenerator<TPreConditions, TResult>
   ) {
-    console.log(`Importing ${inputFile}`);
+    Logger.print(`Importing ${inputFile} ...`);
 
     this.fileScanner = new Scanner(inputFile);
     this.preconditions = preconditionsFactory(this.fileScanner);
 
     this.outputPath = path.join(path.dirname(path.dirname(this.inputFile)), 'output');
+
+    Logger.printLn('DONE');
   }
 
   findSolution(): void {
@@ -43,7 +46,7 @@ export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreCondi
         this.bestScore = score;
         this.bestSolution = result;
         this.improvementsCount++;
-        console.log(`[${this.generator.name}] - ${this.shortInputName} New BEST = ${score}`);
+        Logger.printLn(`[${this.generator.name}] - ${this.shortInputName} New BEST = ${score}`);
         this.writeSolution();
       }
     }
@@ -69,7 +72,7 @@ export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreCondi
         const info = OutputFile.fromOutputFileName(filename);
         if (`${info.inputName}.in` === this.shortInputName) {
           if (info.score < this.bestScore) {
-            console.log(`Improved best score: ${info.score} -> ${this.bestScore} - removing ${filename}`);
+            Logger.printLn(`Improved best score: ${info.score} -> ${this.bestScore} - removing ${filename}`);
             fs.unlinkSync(filename);
           } else {
             // Existing score is higher
@@ -82,8 +85,8 @@ export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreCondi
         writeFile(`${bestOutputPath}/${outputFile.fileName()}`, solutionString);
       }
     } catch (e) {
-      console.error('Error writing file in "/best" directory!');
-      console.error(e);
+      Logger.printLn('Error writing file in "/best" directory!', LEVEL.ERROR);
+      Logger.printLn(e, LEVEL.ERROR);
     }
   }
 
@@ -94,9 +97,9 @@ export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreCondi
   ): void {
     // TODO: run all solution finders in parallel (worker threads ??)
     fileNames.forEach((f, _, __) => {
-      console.log(`${f} ------------------------------------------------ START`);
+      Logger.printLn(`${f} ------------------------------------------------ START`);
       new SolutionFinder<TResult, TPreConditions>(f, preconditionsFactory, generatorFactory()).findSolution();
-      console.log(`${f} ------------------------------------------------   END`);
+      Logger.printLn(`${f} ------------------------------------------------   END`);
     });
   }
 }
