@@ -39,6 +39,7 @@ export class DumbHorizontalGenerator implements ISolutionGenerator<SlideShowStat
 
     let randomIndex = randIntMax(remainingHorizontalPhotos.length - 1);
 
+    // Take a random horizontal photo
     const slide = new Slide([remainingHorizontalPhotos[randomIndex]]);
     removeFromArray(remainingHorizontalPhotos, randomIndex);
     return slide;
