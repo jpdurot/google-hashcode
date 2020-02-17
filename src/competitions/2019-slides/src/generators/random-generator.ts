@@ -9,7 +9,6 @@ import { removeFromArray } from '../../../../hashcode-tooling/utils/array-util';
 export class RandomGenerator implements ISolutionGenerator<SlideShowState, SlideShowSolution> {
   static NAME = 'RandomGenerator';
   hasNextGenerator: boolean = true;
-  remainingPhotos: Photo<Orientation>[] = [];
   remainingVerticalPhotos: Photo<'V'>[] = [];
   remainingHorizontalPhotos: Photo<'H'>[] = [];
 
@@ -22,10 +21,10 @@ export class RandomGenerator implements ISolutionGenerator<SlideShowState, Slide
     this.hasNextGenerator = false;
 
     const solution = new SlideShowSolution(preConditions);
-    this.remainingPhotos = [...preConditions.allPhotos];
     this.remainingVerticalPhotos = [...preConditions.verticalPhotos];
     this.remainingHorizontalPhotos = [...preConditions.horizontalPhotos];
 
+    // Ends if there are not 2 vertical or 1 horizontal left
     while (this.remainingVerticalPhotos.length >= 2 || this.remainingHorizontalPhotos.length >= 1) {
       let nextSlide = this.generateNextSlide();
       solution.addSlide(nextSlide);
@@ -35,6 +34,7 @@ export class RandomGenerator implements ISolutionGenerator<SlideShowState, Slide
   }
 
   generateNextSlide(): Slide {
+    // Pick randomly vertical or horizontal, except if there is only vertical or horizontal left
     if (this.remainingVerticalPhotos.length < 2 && this.remainingHorizontalPhotos.length >= 1) {
       return this.takeHorizontalSlide();
     } else if (this.remainingVerticalPhotos.length >= 2 && this.remainingHorizontalPhotos.length < 1) {
@@ -57,25 +57,11 @@ export class RandomGenerator implements ISolutionGenerator<SlideShowState, Slide
     return new Slide([selectedPhoto]);
   }
 
-  takeRandomPhoto(): Photo<Orientation> {
-    let randomIndex = randIntMax(this.remainingPhotos.length - 1);
-    let selectedPhoto = this.remainingPhotos[randomIndex];
-
-    removeFromArray(this.remainingPhotos, randomIndex);
-
-    selectedPhoto.orientation === 'H'
-      ? removeFromArray(this.remainingHorizontalPhotos, selectedPhoto.indexInSpecificArray)
-      : removeFromArray(this.remainingVerticalPhotos, selectedPhoto.indexInSpecificArray);
-
-    return selectedPhoto;
-  }
-
   takeRandomVerticalPhoto(): Photo<'V'> {
     let randomIndex = randIntMax(this.remainingVerticalPhotos.length - 1);
     let selectedPhoto = this.remainingVerticalPhotos[randomIndex];
 
     removeFromArray(this.remainingVerticalPhotos, randomIndex);
-    removeFromArray(this.remainingPhotos, selectedPhoto.index);
 
     return selectedPhoto;
   }
@@ -86,7 +72,6 @@ export class RandomGenerator implements ISolutionGenerator<SlideShowState, Slide
 
     try {
       removeFromArray(this.remainingHorizontalPhotos, randomIndex);
-      removeFromArray(this.remainingPhotos, selectedPhoto.index);
     } catch {
       console.log(`Random index ${randomIndex}`);
     }
