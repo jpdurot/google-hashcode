@@ -25,6 +25,8 @@ export class SlideShowSolution implements ISolution<SlideShowState> {
     const slideLength = this.slides.length;
 
     this.slides.push(slide);
+
+    // Update score if at least two slides in the solution
     if (slideLength > 0) {
       this.score += this.getSlideTransitionValue(this.slides[slideLength - 1], slide);
     }
@@ -54,7 +56,7 @@ export class SlideShowSolution implements ISolution<SlideShowState> {
   }
 
   toDumpString(): string {
-    return JSON.stringify(this, null, 2);
+    return '';
   }
 
   populateFromDumpString(dumpString: string): void {
