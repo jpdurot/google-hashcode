@@ -5,7 +5,6 @@ import { Photo, Orientation } from '../models/photo';
 import { Slide } from '../models/slide';
 import { randIntMax } from '../../../../hashcode-tooling/utils/random-utils';
 import { removeFromArray } from '../../../../hashcode-tooling/utils/array-util';
-import { PrimitiveRelationMatrix } from '../../../../hashcode-tooling/utils/relation-matrix-primitive';
 import { intersection, union } from '../../../../hashcode-tooling/utils/set-util';
 import { difference } from './../../../../hashcode-tooling/utils/set-util';
 
@@ -14,25 +13,23 @@ type SearchGroupPhoto<T extends Orientation> = {
   photo: Photo<T>;
 };
 
-export class GroupIntersectionGenerator implements ISolutionGenerator<SlideShowState, SlideShowSolution> {
+export class GroupSelectionGenerator implements ISolutionGenerator<SlideShowState, SlideShowSolution> {
   static NAME = 'GroupSelectionGenerator';
   hasNextGenerator: boolean = true;
   remainingPhotos: Photo<Orientation>[] = [];
   remainingVerticalPhotos: Photo<'V'>[] = [];
   remainingHorizontalPhotos: Photo<'H'>[] = [];
-  photoTagsRelation = new PrimitiveRelationMatrix<number, string>();
 
   readonly GROUP_SIZE = 100;
 
   get name(): string {
-    return GroupIntersectionGenerator.NAME;
+    return GroupSelectionGenerator.NAME;
   }
 
   next(preConditions: SlideShowState): SlideShowSolution {
     // This is one shot
     this.hasNextGenerator = false;
 
-    this.photoTagsRelation = preConditions.relationPhotoTags;
     const solution = new SlideShowSolution(preConditions);
     this.remainingPhotos = [...preConditions.allPhotos];
     this.remainingVerticalPhotos = [...preConditions.verticalPhotos];

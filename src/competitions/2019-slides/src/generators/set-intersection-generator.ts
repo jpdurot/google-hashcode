@@ -6,7 +6,6 @@ import { Slide } from '../models/slide';
 import { randIntMax } from '../../../../hashcode-tooling/utils/random-utils';
 import { removeFromArray } from '../../../../hashcode-tooling/utils/array-util';
 import { intersection } from '../../../../hashcode-tooling/utils/set-util';
-import { IRelationMatrix } from '../../../../hashcode-tooling/utils/i-relation-matrix';
 
 export class SetIntersectionGenerator implements ISolutionGenerator<SlideShowState, SlideShowSolution> {
   /** ATENTION: this generator is only theoretical, it doesn't complete the task in feasible time
@@ -19,21 +18,15 @@ export class SetIntersectionGenerator implements ISolutionGenerator<SlideShowSta
   remainingPhotos: Photo<Orientation>[] = [];
   remainingVerticalPhotos: Photo<'V'>[] = [];
   remainingHorizontalPhotos: Photo<'H'>[] = [];
-  _photoTagsRelation: IRelationMatrix<number, string> | undefined;
 
   get name(): string {
     return SetIntersectionGenerator.NAME;
-  }
-
-  get photoTagsRelation() {
-    return this._photoTagsRelation as IRelationMatrix<number, string>;
   }
 
   next(preConditions: SlideShowState): SlideShowSolution {
     // This is one shot
     this.hasNextGenerator = false;
 
-    this._photoTagsRelation = preConditions.relationPhotoTags;
     const solution = new SlideShowSolution(preConditions);
     this.remainingPhotos = [...preConditions.allPhotos];
     this.remainingVerticalPhotos = [...preConditions.verticalPhotos];
