@@ -92,15 +92,11 @@ export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreCondi
     preconditionsFactory: (scanner: Scanner) => TPreConditions,
     generatorFactory: () => ISolutionGenerator<TPreConditions, TResult>
   ): void {
-    var solutionFinders: Array<SolutionFinder<TResult, TPreConditions>> = fileNames.map(
-      (f, _, __) => new SolutionFinder<TResult, TPreConditions>(f, preconditionsFactory, generatorFactory())
-    );
-
     // TODO: run all solution finders in parallel (worker threads ??)
-    solutionFinders.forEach(finder => {
-      console.log(`${finder.shortInputName} ------------------------------------------------ START`);
-      finder.findSolution();
-      console.log(`${finder.shortInputName} ------------------------------------------------   END`);
+    fileNames.forEach((f, _, __) => {
+      console.log(`${f} ------------------------------------------------ START`);
+      new SolutionFinder<TResult, TPreConditions>(f, preconditionsFactory, generatorFactory()).findSolution();
+      console.log(`${f} ------------------------------------------------   END`);
     });
   }
 }
