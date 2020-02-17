@@ -1,6 +1,7 @@
 import { IndexDictionary } from './index-dictionary';
+import { IRelationMatrix } from './i-relation-matrix';
 
-export class PrimitiveRelationMatrix<LineType, ColumnType> {
+export class PrimitiveRelationMatrix<LineType, ColumnType> implements IRelationMatrix<LineType, ColumnType> {
   columnIndexes = new IndexDictionary<ColumnType>();
   lineIndexes = new IndexDictionary<LineType>();
 

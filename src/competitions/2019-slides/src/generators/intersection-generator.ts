@@ -1,11 +1,11 @@
 import { ISolutionGenerator } from '../../../../hashcode-tooling/i-solution-generator';
 import { SlideShowState } from '../models/slideShowState';
 import { SlideShowSolution } from '../models/slideShowSolution';
-import { Photo, Orientation } from '../models/photo';
+import { Orientation, Photo } from '../models/photo';
 import { Slide } from '../models/slide';
 import { randIntMax } from '../../../../hashcode-tooling/utils/random-utils';
 import { removeFromArray } from '../../../../hashcode-tooling/utils/array-util';
-import { PrimitiveRelationMatrix } from './../../../../hashcode-tooling/utils/relation-matrix-primitive';
+import { IRelationMatrix } from '../../../../hashcode-tooling/utils/i-relation-matrix';
 
 export class IntersectionGenerator implements ISolutionGenerator<SlideShowState, SlideShowSolution> {
   /** ATENTION: this generator is only theoretical, it doesn't complete the task in feasible time
@@ -17,17 +17,21 @@ export class IntersectionGenerator implements ISolutionGenerator<SlideShowState,
   hasNextGenerator: boolean = true;
   remainingVerticalPhotos: Photo<'V'>[] = [];
   remainingHorizontalPhotos: Photo<'H'>[] = [];
-  photoTagsRelation = new PrimitiveRelationMatrix<number, string>();
+  _photoTagsRelation: IRelationMatrix<number, string> | undefined;
 
   get name(): string {
     return IntersectionGenerator.NAME;
+  }
+
+  get photoTagsRelation() {
+    return this._photoTagsRelation as IRelationMatrix<number, string>;
   }
 
   next(preConditions: SlideShowState): SlideShowSolution {
     // This is one shot
     this.hasNextGenerator = false;
 
-    this.photoTagsRelation = preConditions.relationPhotoTags;
+    this._photoTagsRelation = preConditions.relationPhotoTags;
     const solution = new SlideShowSolution(preConditions);
     this.remainingVerticalPhotos = [...preConditions.verticalPhotos];
     this.remainingHorizontalPhotos = [...preConditions.horizontalPhotos];
@@ -163,12 +167,13 @@ export class IntersectionGenerator implements ISolutionGenerator<SlideShowState,
 
   // Calculate intersection between all remaining photos and this one
   private getIntersectionsWith(remainingInterestingPhotos: Photo<'H' | 'V'>[], photo: Photo<Orientation>) {
-    return remainingInterestingPhotos.map((remainingPhoto: Photo<Orientation>, index) => ({
+    let map = remainingInterestingPhotos.map((remainingPhoto: Photo<Orientation>, index) => ({
       value: this.photoTagsRelation
         .getRelationLineIntersection(photo.index, remainingPhoto.index)
         .reduce((a, b) => a + b),
       index
     }));
+    return map;
   }
 
   takePhoto<T extends Orientation>(indexInSpecificArray: number, orientation: T): Photo<T> {

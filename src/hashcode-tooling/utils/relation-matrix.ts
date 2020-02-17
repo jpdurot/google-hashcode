@@ -1,7 +1,8 @@
-import { sparse } from 'mathjs';
+import { Matrix, sparse, index } from 'mathjs';
 import { IndexDictionary } from './index-dictionary';
+import { IRelationMatrix } from './i-relation-matrix';
 
-export class RelationMatrix<LineType, ColumnType> {
+export class RelationMatrix<LineType, ColumnType> implements IRelationMatrix<LineType, ColumnType> {
   columnIndexes = new IndexDictionary<ColumnType>();
   lineIndexes = new IndexDictionary<LineType>();
 
@@ -33,13 +34,27 @@ export class RelationMatrix<LineType, ColumnType> {
   getRelatedLines(column: ColumnType) {
     const columnIndex = this.columnIndexes.getOrAdd(column);
 
-    return this.matrix.subset([0, this.lineIndexes.lastIndex], columnIndex);
+    return this.matrix.subset(index([0, this.lineIndexes.lastIndex], columnIndex));
   }
 
   getRelatedColumns(line: LineType) {
     const lineIndex = this.lineIndexes.getOrAdd(line);
 
-    return this.matrix.subset(lineIndex, [0, this.columnIndexes.lastIndex]);
+    return this.matrix.subset(index(lineIndex, [0, this.columnIndexes.lastIndex]));
+  }
+
+  getRelationLineIntersection(firstLine: LineType, secondLine: LineType): number[] {
+    const firstLineRelations = this.getRelatedColumns(firstLine);
+    const secondLineRelations = this.getRelatedColumns(secondLine);
+
+    return this.getRelationArrayIntersection(firstLineRelations, secondLineRelations);
+  }
+
+  getRelationColumnIntersection(firstColumn: ColumnType, secondColumn: ColumnType): number[] {
+    const firstColumnRelations = this.getRelatedLines(firstColumn);
+    const secondColumnRelations = this.getRelatedLines(secondColumn);
+
+    return this.getRelationArrayIntersection(firstColumnRelations, secondColumnRelations);
   }
 
   outputSizeAndStorage(): void {
@@ -52,5 +67,16 @@ export class RelationMatrix<LineType, ColumnType> {
 
   resize(noOfLines: number, noOfColumns: number): void {
     this.matrix.resize([noOfLines, noOfColumns]);
+  }
+
+  private getRelationArrayIntersection(firstRelationArray: Matrix, secondRelationArray: Matrix): number[] {
+    const intersectionSize = Math.max(firstRelationArray.size()[0], secondRelationArray.size()[0]);
+    let intersection: number[] = [];
+    for (let i = 0; i < intersectionSize; i++) {
+      // FIXME not sure about this [i, 0]
+      intersection[i] = (firstRelationArray.get([i, 0]) ?? 0) * (secondRelationArray.get([i, 0]) ?? 0);
+    }
+
+    return intersection;
   }
 }
