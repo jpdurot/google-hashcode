@@ -5,13 +5,15 @@ import { SlideShowSolution } from './../models/slideShowSolution';
 import { RandomGenerator } from './random-generator';
 import { IntersectionGenerator } from './intersection-generator';
 import { SetIntersectionGenerator } from './set-intersection-generator';
+import { GroupIntersectionGenerator } from './group-selection-generator';
 
 export class GeneratorFactory {
   static knownGenerators = {
     [DumbHorizontalGenerator.NAME.toUpperCase()]: () => new DumbHorizontalGenerator(),
     [RandomGenerator.NAME.toUpperCase()]: () => new RandomGenerator(),
     [IntersectionGenerator.NAME.toUpperCase()]: () => new IntersectionGenerator(),
-    [SetIntersectionGenerator.NAME.toUpperCase()]: () => new SetIntersectionGenerator()
+    [SetIntersectionGenerator.NAME.toUpperCase()]: () => new SetIntersectionGenerator(),
+    [GroupIntersectionGenerator.NAME.toUpperCase()]: () => new GroupIntersectionGenerator()
   };
 
   public static from(name: string): ISolutionGenerator<SlideShowState, SlideShowSolution> {
