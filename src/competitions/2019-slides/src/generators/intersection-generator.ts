@@ -79,7 +79,8 @@ export class IntersectionGenerator implements ISolutionGenerator<SlideShowState,
       const secondPhoto = this.takeSmallestIntersectionPhoto(firstPhoto, 'V');
       return new Slide([firstPhoto, secondPhoto]);
     } else {
-      // Previous slide only has two vertical photos
+      // Previous slide has two vertical photos
+      // TODO I don't understand why we take the second photo as reference, we should take all tags from the two photos
       const firstPhoto = this.takeBiggestIntersectionPhoto(previousSlide.photos[1], 'V');
       const secondPhoto = this.takeSmallestIntersectionPhoto(firstPhoto, 'V');
       return new Slide([firstPhoto, secondPhoto]);
@@ -91,7 +92,8 @@ export class IntersectionGenerator implements ISolutionGenerator<SlideShowState,
       // Previous slide only has one horizontal photo
       return new Slide([this.takeMedianIntersectionPhoto(previousSlide.photos[0], 'H')]);
     } else {
-      // Previous slide only has two vertical photos
+      // Previous slide has two vertical photos
+      // TODO I don't understand why we take the second photo as reference, we should take all tags from the two photos
       return new Slide([this.takeBiggestIntersectionPhoto(previousSlide.photos[1], 'H')]);
     }
   }
