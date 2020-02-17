@@ -10,12 +10,11 @@ import { PrimitiveRelationMatrix } from './../../../../hashcode-tooling/utils/re
 export class IntersectionGenerator implements ISolutionGenerator<SlideShowState, SlideShowSolution> {
   /** ATENTION: this generator is only theoretical, it doesn't complete the task in feasible time
    * calculating the intersection of tags between one photo and all the others take too much time,
-   * even with the relation matrix approach. It does finishes for problems A and C and finds a 5 times
+   * even with the relation matrix approach. It does finish for problems A and C and finds a 5 times
    * better result for the C problem
    */
   static NAME = 'IntersectionGenerator';
   hasNextGenerator: boolean = true;
-  remainingPhotos: Photo<Orientation>[] = [];
   remainingVerticalPhotos: Photo<'V'>[] = [];
   remainingHorizontalPhotos: Photo<'H'>[] = [];
   photoTagsRelation = new PrimitiveRelationMatrix<number, string>();
@@ -30,14 +29,13 @@ export class IntersectionGenerator implements ISolutionGenerator<SlideShowState,
 
     this.photoTagsRelation = preConditions.relationPhotoTags;
     const solution = new SlideShowSolution(preConditions);
-    this.remainingPhotos = [...preConditions.allPhotos];
     this.remainingVerticalPhotos = [...preConditions.verticalPhotos];
     this.remainingHorizontalPhotos = [...preConditions.horizontalPhotos];
 
     let firstSlide = this.generateRandomSlide();
     solution.addSlide(firstSlide);
-
     let nextSlide = this.generateNextSlide(firstSlide);
+
     while (this.remainingVerticalPhotos.length >= 2 || this.remainingHorizontalPhotos.length >= 1) {
       console.log(
         `Remaining Vertical Photos: ${this.remainingVerticalPhotos.length}, Remaining Horizontal Photos: ${this.remainingHorizontalPhotos.length}`
@@ -50,6 +48,7 @@ export class IntersectionGenerator implements ISolutionGenerator<SlideShowState,
   }
 
   generateRandomSlide(): Slide {
+    // Pick randomly vertical or horizontal, except if there is only vertical or horizontal left
     if (this.remainingVerticalPhotos.length < 2 && this.remainingHorizontalPhotos.length >= 1) {
       return this.takeRandomHorizontalSlide();
     } else if (this.remainingVerticalPhotos.length >= 2 && this.remainingHorizontalPhotos.length < 1) {
@@ -75,21 +74,25 @@ export class IntersectionGenerator implements ISolutionGenerator<SlideShowState,
 
   takeIntersectionVerticalSlide(previousSlide: Slide): Slide {
     if (previousSlide.photos.length === 1) {
-      const firstPhoto = this.takeBiggestIntersectionPhoto<'V'>(previousSlide.photos[0], 'V');
-      const secondPhoto = this.takeSmallestIntersectionPhoto<'V'>(firstPhoto, 'V');
+      // Previous slide only has one horizontal photo
+      const firstPhoto = this.takeBiggestIntersectionPhoto(previousSlide.photos[0], 'V');
+      const secondPhoto = this.takeSmallestIntersectionPhoto(firstPhoto, 'V');
       return new Slide([firstPhoto, secondPhoto]);
     } else {
-      const firstPhoto = this.takeBiggestIntersectionPhoto<'V'>(previousSlide.photos[1], 'V');
-      const secondPhoto = this.takeSmallestIntersectionPhoto<'V'>(firstPhoto, 'V');
+      // Previous slide only has two vertical photos
+      const firstPhoto = this.takeBiggestIntersectionPhoto(previousSlide.photos[1], 'V');
+      const secondPhoto = this.takeSmallestIntersectionPhoto(firstPhoto, 'V');
       return new Slide([firstPhoto, secondPhoto]);
     }
   }
 
   takeIntersectionHorizontalSlide(previousSlide: Slide): Slide {
     if (previousSlide.photos.length === 1) {
-      return new Slide([this.takeMedianIntersectionPhoto<'H'>(previousSlide.photos[0], 'H')]);
+      // Previous slide only has one horizontal photo
+      return new Slide([this.takeMedianIntersectionPhoto(previousSlide.photos[0], 'H')]);
     } else {
-      return new Slide([this.takeBiggestIntersectionPhoto<'H'>(previousSlide.photos[1], 'H')]);
+      // Previous slide only has two vertical photos
+      return new Slide([this.takeBiggestIntersectionPhoto(previousSlide.photos[1], 'H')]);
     }
   }
 
@@ -105,20 +108,17 @@ export class IntersectionGenerator implements ISolutionGenerator<SlideShowState,
   }
 
   takeBiggestIntersectionPhoto<T extends Orientation>(photo: Photo<Orientation>, orientation: T): Photo<T> {
-    const remainingInterestingPhotos =
-      orientation === 'H'
-        ? (this.remainingHorizontalPhotos as Photo<T>[])
-        : (this.remainingVerticalPhotos as Photo<T>[]);
+    const remainingInterestingPhotos: Photo<'H' | 'V'>[] =
+      orientation === 'H' ? this.remainingHorizontalPhotos : this.remainingVerticalPhotos;
 
-    let remainingIntersectionSizes = remainingInterestingPhotos.map((remainingPhoto: Photo<Orientation>) =>
-      this.photoTagsRelation.getRelationLineIntersection(photo.index, remainingPhoto.index).reduce((a, b) => a + b)
-    );
+    // Calculate intersection between all remaining photos and this one
+    let remainingIntersectionSizes = this.getIntersectionsWith(remainingInterestingPhotos, photo);
 
     let maxIntersectionValue = Number.NEGATIVE_INFINITY;
     let maxIntersectionIndex = -1;
     for (let i = 0; i < remainingIntersectionSizes.length; i++) {
-      if (remainingIntersectionSizes[i] > maxIntersectionValue) {
-        maxIntersectionValue = remainingIntersectionSizes[i];
+      if (remainingIntersectionSizes[i].value > maxIntersectionValue) {
+        maxIntersectionValue = remainingIntersectionSizes[i].value;
         maxIntersectionIndex = i;
       }
     }
@@ -127,21 +127,12 @@ export class IntersectionGenerator implements ISolutionGenerator<SlideShowState,
   }
 
   takeMedianIntersectionPhoto<T extends Orientation>(photo: Photo<Orientation>, orientation: T): Photo<T> {
-    const remainingInterestingPhotos =
-      orientation === 'H'
-        ? (this.remainingHorizontalPhotos as Photo<T>[])
-        : (this.remainingVerticalPhotos as Photo<T>[]);
+    const remainingInterestingPhotos: Photo<'H' | 'V'>[] =
+      orientation === 'H' ? this.remainingHorizontalPhotos : this.remainingVerticalPhotos;
 
-    const remainingIntersectionSizes = remainingInterestingPhotos
-      .map((remainingPhoto: Photo<Orientation>, index) => {
-        return {
-          value: this.photoTagsRelation
-            .getRelationLineIntersection(photo.index, remainingPhoto.index)
-            .reduce((a, b) => a + b),
-          index
-        };
-      })
-      .sort((a, b) => a.value - b.value);
+    const remainingIntersectionSizes = this.getIntersectionsWith(remainingInterestingPhotos, photo).sort(
+      (a, b) => a.value - b.value
+    );
 
     const medianIntersection = remainingIntersectionSizes[Math.floor(remainingIntersectionSizes.length / 2)];
 
@@ -154,20 +145,28 @@ export class IntersectionGenerator implements ISolutionGenerator<SlideShowState,
         ? (this.remainingHorizontalPhotos as Photo<T>[])
         : (this.remainingVerticalPhotos as Photo<T>[]);
 
-    let remainingIntersectionSizes = remainingInterestingPhotos.map((remainingPhoto: Photo<Orientation>) =>
-      this.photoTagsRelation.getRelationLineIntersection(photo.index, remainingPhoto.index).reduce((a, b) => a + b)
-    );
+    let remainingIntersectionSizes = this.getIntersectionsWith(remainingInterestingPhotos, photo);
 
     let minIntersectionValue = Number.POSITIVE_INFINITY;
     let minIntersectionIndex = -1;
     for (let i = 0; i < remainingIntersectionSizes.length; i++) {
-      if (remainingIntersectionSizes[i] < minIntersectionValue) {
-        minIntersectionValue = remainingIntersectionSizes[i];
+      if (remainingIntersectionSizes[i].value < minIntersectionValue) {
+        minIntersectionValue = remainingIntersectionSizes[i].value;
         minIntersectionIndex = i;
       }
     }
 
     return this.takePhoto<T>(minIntersectionIndex, orientation);
+  }
+
+  // Calculate intersection between all remaining photos and this one
+  private getIntersectionsWith(remainingInterestingPhotos: Photo<'H' | 'V'>[], photo: Photo<Orientation>) {
+    return remainingInterestingPhotos.map((remainingPhoto: Photo<Orientation>, index) => ({
+      value: this.photoTagsRelation
+        .getRelationLineIntersection(photo.index, remainingPhoto.index)
+        .reduce((a, b) => a + b),
+      index
+    }));
   }
 
   takePhoto<T extends Orientation>(indexInSpecificArray: number, orientation: T): Photo<T> {
@@ -181,20 +180,6 @@ export class IntersectionGenerator implements ISolutionGenerator<SlideShowState,
       removeFromArray(this.remainingVerticalPhotos, indexInSpecificArray);
     }
 
-    removeFromArray(this.remainingPhotos, selectedPhoto.index);
-    return selectedPhoto;
-  }
-
-  takeRandomPhoto(): Photo<Orientation> {
-    let randomIndex = randIntMax(this.remainingPhotos.length - 1);
-    let selectedPhoto = this.remainingPhotos[randomIndex];
-
-    removeFromArray(this.remainingPhotos, randomIndex);
-
-    selectedPhoto.orientation === 'H'
-      ? removeFromArray(this.remainingHorizontalPhotos, selectedPhoto.indexInSpecificArray)
-      : removeFromArray(this.remainingVerticalPhotos, selectedPhoto.indexInSpecificArray);
-
     return selectedPhoto;
   }
 
@@ -203,7 +188,6 @@ export class IntersectionGenerator implements ISolutionGenerator<SlideShowState,
     let selectedPhoto = this.remainingVerticalPhotos[randomIndex];
 
     removeFromArray(this.remainingVerticalPhotos, randomIndex);
-    removeFromArray(this.remainingPhotos, selectedPhoto.index);
 
     return selectedPhoto;
   }
@@ -213,7 +197,6 @@ export class IntersectionGenerator implements ISolutionGenerator<SlideShowState,
     let selectedPhoto = this.remainingHorizontalPhotos[randomIndex];
 
     removeFromArray(this.remainingHorizontalPhotos, randomIndex);
-    removeFromArray(this.remainingPhotos, selectedPhoto.index);
 
     return selectedPhoto;
   }
