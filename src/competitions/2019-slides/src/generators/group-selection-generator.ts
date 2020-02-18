@@ -6,7 +6,6 @@ import { Slide } from '../models/slide';
 import { randIntMax } from '../../../../hashcode-tooling/utils/random-utils';
 import { removeFromArray } from '../../../../hashcode-tooling/utils/array-util';
 import { intersection, union } from '../../../../hashcode-tooling/utils/set-util';
-import { difference } from './../../../../hashcode-tooling/utils/set-util';
 
 type SearchGroupPhoto<T extends Orientation> = {
   searchGroupIndex: number;
@@ -20,7 +19,7 @@ export class GroupSelectionGenerator implements ISolutionGenerator<SlideShowStat
   remainingVerticalPhotos: Photo<'V'>[] = [];
   remainingHorizontalPhotos: Photo<'H'>[] = [];
 
-  readonly GROUP_SIZE = 100;
+  readonly GROUP_SIZE = 1000;
 
   get name(): string {
     return GroupSelectionGenerator.NAME;
@@ -129,13 +128,14 @@ export class GroupSelectionGenerator implements ISolutionGenerator<SlideShowStat
     remainingPhotos: SearchGroupPhoto<T>[],
     searchGroup: Photo<Orientation>[]
   ): Photo<T> {
-    let remainingPhotoValues = remainingPhotos.map(remainingPhoto =>
-      Math.min(
-        difference(tags, remainingPhoto.photo.tags).size,
-        intersection(tags, remainingPhoto.photo.tags).size,
-        difference(remainingPhoto.photo.tags, tags).size
-      )
-    );
+    let remainingPhotoValues = remainingPhotos.map(remainingPhoto => {
+      const intersectionSize = intersection(tags, remainingPhoto.photo.tags).size;
+      return Math.min(
+        tags.size - intersectionSize,
+        intersectionSize,
+        remainingPhoto.photo.tags.size - intersectionSize
+      );
+    });
 
     let maxValueValue = Number.NEGATIVE_INFINITY;
     let maxValueIndex = -1;
