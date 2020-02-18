@@ -45,3 +45,17 @@ and write solution files to
 ```shell script
 dist/competitions/2020-training/output
 ```
+## Strategy
+
+1. share common understanding of exercise
+2. modelize basic input
+3. modelize output
+4. in parallel:
+   1. code input
+   2. code output
+   3. modelize dumb generator
+   4. modelize advanced input
+      1. define different steps (ex: remove one dimension in inputs)
+5. code dumb generator
+6. submit to judge system
+7. iterate...
