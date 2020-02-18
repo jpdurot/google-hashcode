@@ -1,6 +1,7 @@
 import { Matrix, sparse, index } from 'mathjs';
 import { IndexDictionary } from './index-dictionary';
 import { IRelationMatrix } from './i-relation-matrix';
+import math = require('mathjs');
 
 export class RelationMatrix<LineType, ColumnType> implements IRelationMatrix<LineType, ColumnType> {
   columnIndexes = new IndexDictionary<ColumnType>();
@@ -67,6 +68,19 @@ export class RelationMatrix<LineType, ColumnType> implements IRelationMatrix<Lin
 
   resize(noOfLines: number, noOfColumns: number): void {
     this.matrix.resize([noOfLines, noOfColumns]);
+  }
+
+  getRelationLineIntersectionSize(firstLine: LineType, secondLine: LineType): number {
+    const firstLineRelations = this.getRelatedColumns(firstLine);
+    const secondLineRelations = this.getRelatedColumns(secondLine);
+
+    return math.dot(firstLineRelations, secondLineRelations);
+  }
+  getRelationColumnIntersectionSize(firstColumn: ColumnType, secondColumn: ColumnType): number {
+    const firstColumnRelations = this.getRelatedLines(firstColumn);
+    const secondColumnRelations = this.getRelatedLines(secondColumn);
+
+    return math.dot(firstColumnRelations, secondColumnRelations);
   }
 
   private getRelationArrayIntersection(firstRelationArray: Matrix, secondRelationArray: Matrix): number[] {

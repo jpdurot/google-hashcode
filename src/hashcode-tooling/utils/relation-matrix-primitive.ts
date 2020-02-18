@@ -45,6 +45,13 @@ export class PrimitiveRelationMatrix<LineType, ColumnType> implements IRelationM
     return this.matrix[lineIndex];
   }
 
+  getRelationLineIntersectionSize(firstLine: LineType, secondLine: LineType): number {
+    return this.getRelationLineIntersection(firstLine, secondLine).reduce((a, b) => a + b);
+  }
+  getRelationColumnIntersectionSize(firstColumn: ColumnType, secondColumn: ColumnType): number {
+    return this.getRelationColumnIntersection(firstColumn, secondColumn).reduce((a, b) => a + b);
+  }
+
   getRelationLineIntersection(firstLine: LineType, secondLine: LineType): number[] {
     const firstLineRelations = this.getRelatedColumns(firstLine);
     const secondLineRelations = this.getRelatedColumns(secondLine);
