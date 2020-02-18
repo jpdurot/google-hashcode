@@ -6,10 +6,10 @@
   "currentExercise": "2019-slides",
   "scripts": {
     "watch": "concurrently -k -n \"Typescript\" -p \"[{name}]\" -c \"blue\" \"tsc --watch\" ",
-    "graph:watch": "nodemon --watch src/competitions/${npm_package_currentExercise}/output -e out dist/hashcode-tooling/graph/solution-graph.js ${npm_package_currentExercise}",
-    "graph:serve": "http-server ./src/hashcode-tooling/graph",
-    "go": "node dist/competitions/${npm_package_currentExercise}/src/index.js",
-    "go:profile": "node --inspect-brk dist/competitions/${npm_package_currentExercise}/src/index.js",
+    "graph:watch": "cross-var nodemon --watch src/competitions/${npm_package_currentExercise}/output -e out dist/hashcode-tooling/graph/solution-graph.js ${npm_package_currentExercise}",
+    "graph:serve": "cross-var http-server ./src/hashcode-tooling/graph",
+    "go": "cross-var node dist/competitions/${npm_package_currentExercise}/src/index.js",
+    "go:profile": "cross-var node --inspect-brk dist/competitions/${npm_package_currentExercise}/src/index.js",
     "prettier": "prettier --write \"./src/**/*.ts\""
   },
   "author": "",
@@ -26,6 +26,7 @@
     "@types/lodash": "^4.14.149",
     "@types/mathjs": "^6.0.4",
     "command-line-args": "^5.1.1",
+    "cross-var": "^1.1.0",
     "lodash": "^4.17.15",
     "mathjs": "^6.6.0",
     "serialize-javascript": "^2.1.2",
