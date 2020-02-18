@@ -12,4 +12,8 @@ export interface IRelationMatrix<LineType, ColumnType> {
   getRelationLineIntersectionSize(firstLine: LineType, secondLine: LineType): number;
 
   getRelationColumnIntersectionSize(firstColumn: ColumnType, secondColumn: ColumnType): number;
+
+  getAllLineIntersectionSizes(intersectedLine: LineType): number[];
+
+  getAllColumnIntersectionSizes(intersectedColumn: ColumnType): number[];
 }

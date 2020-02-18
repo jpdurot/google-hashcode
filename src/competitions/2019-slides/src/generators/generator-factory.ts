@@ -6,6 +6,7 @@ import { RandomGenerator } from './random-generator';
 import { IntersectionGenerator } from './intersection-generator';
 import { SetIntersectionGenerator } from './set-intersection-generator';
 import { GroupSelectionGenerator } from './group-selection-generator';
+import { GroupSelectionGeneratorMatrix } from './group-selection-generator-matrix';
 
 export class GeneratorFactory {
   static knownGenerators = {
@@ -13,7 +14,8 @@ export class GeneratorFactory {
     [RandomGenerator.NAME.toUpperCase()]: () => new RandomGenerator(),
     [IntersectionGenerator.NAME.toUpperCase()]: () => new IntersectionGenerator(),
     [SetIntersectionGenerator.NAME.toUpperCase()]: () => new SetIntersectionGenerator(),
-    [GroupSelectionGenerator.NAME.toUpperCase()]: () => new GroupSelectionGenerator()
+    [GroupSelectionGenerator.NAME.toUpperCase()]: () => new GroupSelectionGenerator(),
+    [GroupSelectionGeneratorMatrix.NAME.toUpperCase()]: () => new GroupSelectionGeneratorMatrix()
   };
 
   public static from(name: string): ISolutionGenerator<SlideShowState, SlideShowSolution> {

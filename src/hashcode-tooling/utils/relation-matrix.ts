@@ -35,13 +35,17 @@ export class RelationMatrix<LineType, ColumnType> implements IRelationMatrix<Lin
   getRelatedLines(column: ColumnType) {
     const columnIndex = this.columnIndexes.getOrAdd(column);
 
-    return this.matrix.subset(index([0, this.lineIndexes.lastIndex], columnIndex));
+    return this.matrix
+      .subset(index([0, this.lineIndexes.lastIndex], columnIndex))
+      .resize([this.lineIndexes.lastIndex + 1], 1);
   }
 
   getRelatedColumns(line: LineType) {
     const lineIndex = this.lineIndexes.getOrAdd(line);
 
-    return this.matrix.subset(index(lineIndex, [0, this.columnIndexes.lastIndex]));
+    return this.matrix
+      .subset(index(lineIndex, [0, this.columnIndexes.lastIndex]))
+      .resize([1, this.columnIndexes.lastIndex + 1], 0);
   }
 
   getRelationLineIntersection(firstLine: LineType, secondLine: LineType): number[] {
@@ -81,6 +85,19 @@ export class RelationMatrix<LineType, ColumnType> implements IRelationMatrix<Lin
     const secondColumnRelations = this.getRelatedLines(secondColumn);
 
     return math.dot(firstColumnRelations, secondColumnRelations);
+  }
+
+  getAllLineIntersectionSizes(intersectedLine: LineType): number[] {
+    const intersectedLineRelations = this.getRelatedColumns(intersectedLine);
+    const result = math.multiply(this.matrix, math.transpose(intersectedLineRelations));
+    return result.toArray() as number[];
+  }
+
+  getAllColumnIntersectionSizes(intersectedColumn: ColumnType): number[] {
+    const intersectedColumnRelations = this.getRelatedLines(intersectedColumn);
+
+    const result = math.multiply(this.matrix, math.transpose(intersectedColumnRelations));
+    return result.toArray() as number[];
   }
 
   private getRelationArrayIntersection(firstRelationArray: Matrix, secondRelationArray: Matrix): number[] {

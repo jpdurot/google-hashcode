@@ -18,6 +18,6 @@ export class IndexDictionary<T> {
   }
 
   getOrAdd(t: T): number {
-    return this.get(t) || this.add(t);
+    return this.get(t) ?? this.add(t);
   }
 }

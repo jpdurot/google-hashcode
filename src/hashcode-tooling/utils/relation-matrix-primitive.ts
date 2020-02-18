@@ -94,6 +94,13 @@ export class PrimitiveRelationMatrix<LineType, ColumnType> implements IRelationM
     return this.getRelationArrayUnion(firstColumnRelations, secondColumnRelations);
   }
 
+  getAllLineIntersectionSizes(intersectedLine: LineType): number[] {
+    throw new Error('Method not implemented.');
+  }
+  getAllColumnIntersectionSizes(intersectedColumn: ColumnType): number[] {
+    throw new Error('Method not implemented.');
+  }
+
   private getRelationArrayUnion(firstRelationArray: number[], secondRelationArray: number[]): number[] {
     const unionSize = Math.max(firstRelationArray.length, secondRelationArray.length);
     let union: number[] = [];
