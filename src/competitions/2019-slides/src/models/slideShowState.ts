@@ -18,9 +18,9 @@ export class SlideShowState {
       const noOfTags = scanner.nextNumber();
 
       const tags = new Set<string>();
-      if (i % percent == 0) {
-        Logger.printLn(`${i / percent}%`);
-      }
+      // if (i % percent == 0) {
+      //   Logger.printLn(`${i / percent}%`);
+      // }
 
       for (let j = 0; j < noOfTags; j++) {
         const tag = scanner.nextString();
