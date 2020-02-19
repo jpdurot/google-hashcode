@@ -50,12 +50,13 @@ dist/competitions/2020-training/output
 1. share common understanding of exercise
 2. modelize basic input
 3. modelize output
+3. modelize dumb generator
 4. in parallel:
    1. code input
    2. code output
-   3. modelize dumb generator
-   4. modelize advanced input
-      1. define different steps (ex: remove one dimension in inputs)
-5. code dumb generator
+   3. code dumb generator
 6. submit to judge system
+7. modelize advanced generator
+    4. modelize intermediate advanced input
+    1. define different steps (ex: remove one dimension in inputs)
 7. iterate...
