@@ -6,10 +6,14 @@
   "currentExercise": "2019-slides",
   "scripts": {
     "watch": "concurrently -k -n \"Typescript\" -p \"[{name}]\" -c \"blue\" \"tsc --watch\" ",
-    "graph:watch": "cross-var nodemon --watch src/competitions/$npm_package_currentExercise/output -e out dist/hashcode-tooling/graph/solution-graph.js $npm_package_currentExercise",
-    "graph:serve": "cross-var http-server ./src/hashcode-tooling/graph",
-    "go": "cross-var node dist/competitions/$npm_package_currentExercise/src/index.js",
-    "go:profile": "cross-var node --inspect-brk dist/competitions/$npm_package_currentExercise/src/index.js",
+    "graph:watch": "nodemon --watch src/competitions/$npm_package_currentExercise/output -e out dist/hashcode-tooling/graph/solution-graph.js $npm_package_currentExercise",
+    "win:graph:watch": "nodemon --watch src/competitions/%npm_package_currentExercise%/output -e out dist/hashcode-tooling/graph/solution-graph.js %npm_package_currentExercise%",
+    "graph:serve": "http-server ./src/hashcode-tooling/graph",
+    "win:graph:serve": "npm run graph:serve",
+    "go": "node dist/competitions/$npm_package_currentExercise/src/index.js",
+    "win:go": "node dist/competitions/%npm_package_currentExercise%/src/index.js",
+    "go:profile": "node --inspect-brk dist/competitions/$npm_package_currentExercise/src/index.js",
+    "win:go:profile": "node --inspect-brk dist/competitions/%npm_package_currentExercise%/src/index.js",
     "prettier": "prettier --write \"./src/**/*.ts\""
   },
   "author": "",
