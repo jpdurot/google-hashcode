@@ -60,9 +60,6 @@ export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreCondi
     // Write file
     writeFile(`${this.outputPath}/${outputFile.fileName()}`, solutionString);
 
-    // Write dump
-    writeFile(`${this.outputPath}/${outputFile.dumpFileName()}`, this.bestSolution?.toDumpString());
-
     // Override best file if needed
     try {
       const bestOutputPath = path.join(this.outputPath, 'best');
@@ -95,7 +92,6 @@ export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreCondi
     preconditionsFactory: (scanner: Scanner) => TPreConditions,
     generatorFactory: () => ISolutionGenerator<TPreConditions, TResult>
   ): void {
-    // TODO: run all solution finders in parallel (worker threads ??)
     fileNames.forEach((f, _, __) => {
       Logger.printLn(`${f} ------------------------------------------------ START`);
       new SolutionFinder<TResult, TPreConditions>(f, preconditionsFactory, generatorFactory()).findSolution();

@@ -35,23 +35,4 @@ export class DumbGenerator implements ISolutionGenerator<AvailablePizzaState, Pi
   hasNext(): boolean {
     return this.hasNextGenerator;
   }
-
-  testDump(outputPath: string) {
-    // Not working
-    readFilesFrom(outputPath).forEach(f => {
-      let fullName = path.join(outputPath, f.name);
-      const info = OutputFile.fromOutputFileName(fullName);
-      if (info.isDumpFile) {
-        const content = fs.readFileSync(fullName).toString();
-        // @ts-ignore
-        const solution = new PizzaOrder(null).fromDumpString(content);
-
-        console.log(solution);
-
-        const outputFile = new OutputFile(info.inputName, solution.score, info.improvementsCount, info.generatorName);
-
-        writeFile(`${outputPath}/${outputFile.fileName()}.test`, solution.toOutputString());
-      }
-    });
-  }
 }

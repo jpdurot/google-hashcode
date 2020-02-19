@@ -54,12 +54,4 @@ export class SlideShowSolution implements ISolution<SlideShowState> {
 
     return output.string;
   }
-
-  toDumpString(): string {
-    return '';
-  }
-
-  populateFromDumpString(dumpString: string): void {
-    throw 'Not working'; // TODO would need to do some complex things for Set() property
-  }
 }

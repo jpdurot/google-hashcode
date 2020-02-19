@@ -48,12 +48,4 @@ export class PizzaOrder implements ISolution<AvailablePizzaState> {
   isValid(): boolean {
     return this.score <= this.state.maximumSlices;
   }
-
-  toDumpString(): string {
-    return JSON.stringify(this, null, 2);
-  }
-
-  populateFromDumpString(dumpString: string): void {
-    throw 'Not working'; // TODO would need to do some complex things for Set() property
-  }
 }
