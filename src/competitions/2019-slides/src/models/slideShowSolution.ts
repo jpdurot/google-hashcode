@@ -21,15 +21,19 @@ export class SlideShowSolution implements ISolution<SlideShowState> {
     this._score = newScore;
   }
 
-  addSlide(slide: Slide): void {
+  addSlide(slide: Slide): number {
     const slideLength = this.slides.length;
 
     this.slides.push(slide);
 
+    let transitionValue = 0;
     // Update score if at least two slides in the solution
     if (slideLength > 0) {
+      transitionValue = this.getSlideTransitionValue(this.slides[slideLength - 1], slide);
       this.score += this.getSlideTransitionValue(this.slides[slideLength - 1], slide);
     }
+
+    return transitionValue;
   }
 
   getSlideTransitionValue(firstSlide: Slide, secondSlide: Slide): number {
