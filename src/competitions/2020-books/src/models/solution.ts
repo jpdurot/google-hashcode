@@ -25,7 +25,6 @@ export class Solution implements ISolution<PreConditions> {
     for (let i = this.currentSignUpDay; i < this.state.numberOfDays && !done; i++) {
       let currentIIndex = i - this.currentSignUpDay;
       for (let j = 0; j < booksPerDay && !done; j++) {
-        console.log(`i: ${i}, j: ${j}, numberdays:${this.state.numberOfDays} `);
         let addedBookId = library.scannedBooks[currentIIndex * booksPerDay + j];
         if (addedBookId === undefined) {
           done = true;
@@ -34,6 +33,10 @@ export class Solution implements ISolution<PreConditions> {
         }
       }
     }
+  }
+
+  canAddLibrary(librarySignUpDays: number) {
+    return this.currentSignUpDay + librarySignUpDays < this.state.numberOfDays;
   }
 
   toOutputString(): string {
