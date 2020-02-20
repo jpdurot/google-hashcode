@@ -1,4 +1,3 @@
-import * as fs from 'fs';
 import { SolutionFinder } from '../../../hashcode-tooling/solution-finder';
 import commandLineArgs = require('command-line-args');
 import { GeneratorFactory } from './generator-factory';
@@ -17,14 +16,21 @@ const inputDataDir = path.join(
     'input'
   ]
 );
-const inputFiles = readFilesFrom(inputDataDir)
+let inputFiles = readFilesFrom(inputDataDir)
   .map(f => f.name)
   .filter(n => n !== '.gitkeep' && !n.endsWith('.pdf'))
   .map(n => path.join(inputDataDir, n));
 
-const optionDefinitions = [{ name: 'generator', alias: 'g', multiple: true, type: String }];
+const optionDefinitions = [
+  { name: 'generator', alias: 'g', multiple: true, type: String },
+  { name: 'file', alias: 'f', multiple: true, type: String }
+];
 
 const options = commandLineArgs(optionDefinitions);
+
+if (options.file) {
+  inputFiles = inputFiles.filter(inputFile => options.file.find((f: string) => f === path.basename(inputFile)));
+}
 
 options.generator.forEach((gName: string) =>
   SolutionFinder.launchOnSeveralFiles(

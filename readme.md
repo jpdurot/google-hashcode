@@ -14,6 +14,14 @@ Use npm version 12
 }
 ```
 
+### Windaube
+
+If running on windows, prefix all npm targets with `win:`
+Example:
+```shell script
+npm run win:graph:serve
+```
+
 ### Build solution
 Start TS Code watch (build automatically when code changes)
 ```shell script
@@ -35,6 +43,12 @@ npm run graph:serve
 Launch the calculation, providing the generator name
 ```shell script
 npm run go -- -g random
+```
+All files will be imported, unless you provide one or many specific filenames (basename)
+
+Ex:
+```shell script
+npm run go -- -g random -f kittens.in -f me_at_the_zoo.in
 ```
 
 If competition is set to `2020-training`, will read input files from:
@@ -62,6 +76,3 @@ dist/competitions/2020-training/output
     1. define different steps (ex: remove one dimension in inputs)
 7. iterate...
 
-## TODO
-bootstrap new exercise
-param = name of input file
