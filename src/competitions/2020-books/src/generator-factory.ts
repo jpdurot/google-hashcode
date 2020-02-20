@@ -4,6 +4,7 @@ import { Solution } from './models/solution';
 import { PreConditions } from './models/preConditions';
 import { ConsoleGenerator } from './generators/console-generator';
 import { LessDumbGenerator } from './generators/less-dumb-generator';
+import { BookOnceGenerator } from './generators/book-once-generator';
 import { SortedGenerator } from './generators/sorted-generator';
 
 export class GeneratorFactory {
@@ -11,6 +12,7 @@ export class GeneratorFactory {
     [DumbGenerator.NAME.toUpperCase()]: () => new DumbGenerator(),
     [ConsoleGenerator.NAME.toUpperCase()]: () => new ConsoleGenerator(),
     [LessDumbGenerator.NAME.toUpperCase()]: () => new LessDumbGenerator(),
+    [BookOnceGenerator.NAME.toUpperCase()]: () => new BookOnceGenerator(),
     [SortedGenerator.NAME.toUpperCase()]: () => new SortedGenerator()
   };
 
