@@ -26,9 +26,12 @@ export class PreConditions {
       const signUpDays = scanner.nextInt();
       const booksPerDay = scanner.nextInt();
       const library = new Library(l, signUpDays, booksPerDay);
+
       for (let b = 0; b < nbBooks; b++) {
         library.bookIds.push(scanner.nextInt());
       }
+
+      library.calculateScore(this.books, this.numberOfDays);
 
       this.libraries.push(library);
     }
