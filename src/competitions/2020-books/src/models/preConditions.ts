@@ -2,8 +2,6 @@ import { Scanner } from '../../../../hashcode-tooling/files/scanner';
 import { Book } from './book';
 import { Library } from './library';
 
-
-
 export class PreConditions {
   public numberOfBooks: number;
   public numberOfDays: number;
@@ -33,15 +31,22 @@ export class PreConditions {
       for (let b = 0; b < nbBooks; b++) {
         library.bookIds.push(scanner.nextInt());
       }
-      
-      library.bookIds = library.bookIds.sort((i,j) => this.books[i].score > this.books[j].score ? 1 : -1);
+
+      library.bookIds = library.bookIds.sort((i, j) => (this.books[i].score > this.books[j].score ? 1 : -1));
 
       library.calculateScore(this.books, this.numberOfDays);
 
-      
       this.libraries.push(library);
     }
     //console.timeEnd("sortBooks");
-      //console.timeLog("sortBooks");
+    //console.timeLog("sortBooks");
+  }
+
+  public takeBooks(bookIds: number[]): void {
+    bookIds.forEach(id => (this.books[id].isAvailable = false));
+  }
+
+  public filterAvailableBooks(bookIds: number[]): number[] {
+    return bookIds.filter(id => this.books[id].isAvailable);
   }
 }
