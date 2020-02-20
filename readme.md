@@ -10,7 +10,7 @@ Use npm version 12
 
 ```json
 {
-  "currentExercise": "2020-training",
+  "currentExercise": "2020-training"
 }
 ```
 

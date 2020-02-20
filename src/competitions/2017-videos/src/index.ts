@@ -1,4 +1,3 @@
-import * as fs from 'fs';
 import { SolutionFinder } from '../../../hashcode-tooling/solution-finder';
 import commandLineArgs = require('command-line-args');
 import { GeneratorFactory } from './generator-factory';
