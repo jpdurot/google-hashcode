@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 
-export function readFilesFrom(dirName: string) {
+export function readFilesFrom(dirName: string): fs.Dirent[] {
   return fs.readdirSync(dirName, { withFileTypes: true }).filter(f => !f.isDirectory());
 }
 

@@ -20,7 +20,7 @@ export class SolutionGraph {
       };
     } = {};
 
-    const files = readFilesFrom(this.resultPath);
+    const files = readFilesFrom(this.resultPath).filter(f => f.name !== '.gitkeep');
 
     const maxScorePerInput: {
       [inputName: string]: {
@@ -30,34 +30,36 @@ export class SolutionGraph {
     } = {};
 
     files.forEach(file => {
-      const output = OutputFile.fromOutputFileName(path.join(this.resultPath, file.name));
+      try {
+        const output = OutputFile.fromOutputFileName(path.join(this.resultPath, file.name));
 
-      // Init
-      datasetPerInputs[output.inputName] = datasetPerInputs[output.inputName] || {
-        datasets: {}
-      };
-
-      datasetPerInputs[output.inputName].datasets[output.generatorName] = datasetPerInputs[output.inputName].datasets[
-        output.generatorName
-      ] || {
-        name: output.generatorName,
-        data: []
-      };
-
-      // Update
-      datasetPerInputs[output.inputName].datasets[output.generatorName].data.push({
-        x: output.modificationTime as number,
-        y: output.score
-      });
-
-      if (maxScorePerInput[output.inputName]?.score || 0 < output.score) {
-        maxScorePerInput[output.inputName] = {
-          score: output.score,
-          generator: output.generatorName
+        // Init
+        datasetPerInputs[output.inputName] = datasetPerInputs[output.inputName] || {
+          datasets: {}
         };
-      }
 
-      //console.log([inputName, score, generator, creationTime]);
+        datasetPerInputs[output.inputName].datasets[output.generatorName] = datasetPerInputs[output.inputName].datasets[
+          output.generatorName
+        ] || {
+          name: output.generatorName,
+          data: []
+        };
+
+        // Update
+        datasetPerInputs[output.inputName].datasets[output.generatorName].data.push({
+          x: output.modificationTime as number,
+          y: output.score
+        });
+
+        if (maxScorePerInput[output.inputName]?.score ?? 0 <= output.score) {
+          maxScorePerInput[output.inputName] = {
+            score: output.score,
+            generator: output.generatorName
+          };
+        }
+      } catch (e) {
+        // Ignore files that don't match the pattern
+      }
     });
 
     const data: {
@@ -89,6 +91,8 @@ export class SolutionGraph {
           .map(key => {
             const data = dataset1.datasets[key].data.sort((a, b) => a.x - b.x);
             let label = key;
+            console.log(inputFile);
+            console.log(maxScorePerInput);
             if (maxScorePerInput[inputFile].generator == key) {
               // This generator has the maximum
               label += ` [${maxScorePerInput[inputFile].score}]`;

@@ -66,29 +66,33 @@ export class SolutionFinder<TResult extends ISolution<TPreConditions>, TPreCondi
       let needToWriteFile = true;
       fs.readdirSync(bestOutputPath).forEach(file => {
         let filename = path.join(bestOutputPath, file);
-        const info = OutputFile.fromOutputFileName(filename);
-        if (info.inputName === this.shortInputName) {
-          if (info.score < this.bestScore) {
-            Logger.printLn('');
-            Logger.printLn(
-              '\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/' +
+        try {
+          const info = OutputFile.fromOutputFileName(filename);
+          if (info.inputName === this.shortInputName) {
+            if (info.score < this.bestScore) {
+              Logger.printLn('');
+              Logger.printLn(
                 '\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/' +
+                  '\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/' +
+                  '\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/' +
+                  '\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/'
+              );
+              Logger.printLn(`Improved best score: ${info.score} -> ${this.bestScore} - removing ${filename}`);
+              Logger.printLn(
                 '\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/' +
-                '\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/'
-            );
-            Logger.printLn(`Improved best score: ${info.score} -> ${this.bestScore} - removing ${filename}`);
-            Logger.printLn(
-              '\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/' +
-                '\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/' +
-                '\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/' +
-                '\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/'
-            );
-            Logger.printLn('');
-            fs.unlinkSync(filename);
-          } else {
-            // Existing score is higher
-            needToWriteFile = false;
+                  '\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/' +
+                  '\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/' +
+                  '\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/\\o/'
+              );
+              Logger.printLn('');
+              fs.unlinkSync(filename);
+            } else {
+              // Existing score is higher
+              needToWriteFile = false;
+            }
           }
+        } catch (e) {
+          // Ignore
         }
       });
 
