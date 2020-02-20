@@ -32,8 +32,7 @@ export class PreConditions {
         library.bookIds.push(scanner.nextInt());
       }
 
-      library.bookIds = library.bookIds.sort((i, j) => (this.books[i].score > this.books[j].score ? 1 : -1));
-
+      library.bookIds = library.bookIds.sort((i, j) => this.books[j].score - this.books[i].score);
       library.calculateScore(this.books, this.numberOfDays);
 
       this.libraries.push(library);
