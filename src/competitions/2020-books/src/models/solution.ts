@@ -5,7 +5,7 @@ import { SignedUpLibrary } from './signedUpLibrary';
 
 export class Solution implements ISolution<PreConditions> {
   signedUpLibraries: SignedUpLibrary[] = [];
-  currentSignUpDays = 0;
+  currentSignUpDay = 0;
   currentScore = 0;
 
   constructor(public state: PreConditions) {}
@@ -15,13 +15,17 @@ export class Solution implements ISolution<PreConditions> {
   }
 
   addSignedUpLibrary(library: SignedUpLibrary) {
-    /*let originalLibrary = this.state.libraries[library.libraryId];
-    this.currentSignUpDays += this.state.signUpDays;
-    let booksPerDay = 2;
+    let originalLibrary = this.state.libraries[library.libraryId];
+    this.currentSignUpDay += originalLibrary.signupDays;
+    let booksPerDay = originalLibrary.booksPerDay;
 
-    for(let i = 0; i < library.scannedBooks.length; i += booksPerDay) {
-      if(this.currentSignUpDays + i)
-    }*/
+    for (let i = this.currentSignUpDay + 1; i < this.state.numberOfDays; i++) {
+      let currentIIndex = i - this.currentSignUpDay - 1;
+      for (let j = 0; j < booksPerDay; j++) {
+        let addedBookId = library.scannedBooks[currentIIndex * booksPerDay + j];
+        this.currentScore += this.state.books[addedBookId].score;
+      }
+    }
   }
 
   toOutputString(): string {
