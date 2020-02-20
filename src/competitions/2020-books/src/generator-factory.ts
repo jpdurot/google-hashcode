@@ -3,11 +3,13 @@ import { DumbGenerator } from './generators/dumb-generator';
 import { Solution } from './models/solution';
 import { PreConditions } from './models/preConditions';
 import { ConsoleGenerator } from './generators/console-generator';
+import { LessDumbGenerator } from './generators/less-dumb-generator';
 
 export class GeneratorFactory {
   static knownGenerators = {
     [DumbGenerator.NAME.toUpperCase()]: () => new DumbGenerator(),
-    [ConsoleGenerator.NAME.toUpperCase()]: () => new ConsoleGenerator()
+    [ConsoleGenerator.NAME.toUpperCase()]: () => new ConsoleGenerator(),
+    [LessDumbGenerator.NAME.toUpperCase()]: () => new LessDumbGenerator()
   };
 
   public static from(name: string): ISolutionGenerator<PreConditions, Solution> {
