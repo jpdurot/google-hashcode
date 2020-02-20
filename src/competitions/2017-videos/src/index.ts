@@ -1,18 +1,26 @@
+import * as fs from 'fs';
 import { SolutionFinder } from '../../../hashcode-tooling/solution-finder';
 import commandLineArgs = require('command-line-args');
 import { GeneratorFactory } from './generator-factory';
 import { VideoState } from './models/videoState';
+import { readFilesFrom } from '../../../hashcode-tooling/utils/file-utils';
+import * as path from 'path';
 
-const inputDataDir: string = './src/competitions/2017-videos/input';
-const inputFiles: Array<string> = [
-  `${inputDataDir}/kittens.in`
-  /*
-  `${inputDataDir}/me_at_the_zoo.in`,
-  `${inputDataDir}/trending_today.in`,
-  `${inputDataDir}/videos_worth_spreading.in`
-  
-   */
-];
+// Dirty hack to get the real directory, since we know we run in /dist...
+const competitionName = path.dirname(__dirname).replace(path.dirname(path.dirname(__dirname)) + '/', '');
+const inputDataDir = path.join(
+  ...[
+    path.dirname(path.dirname(path.dirname(path.dirname(__dirname)))),
+    'src',
+    'competitions',
+    competitionName,
+    'input'
+  ]
+);
+const inputFiles = readFilesFrom(inputDataDir)
+  .map(f => f.name)
+  .filter(n => n !== '.gitkeep' && !n.endsWith('.pdf'))
+  .map(n => path.join(inputDataDir, n));
 
 const optionDefinitions = [{ name: 'generator', alias: 'g', multiple: true, type: String }];
 
