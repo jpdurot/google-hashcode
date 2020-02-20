@@ -3,7 +3,7 @@ import math = require('mathjs');
 
 export class Library {
   public bookIds: number[] = [];
-  public score?: number;
+  public score: number = 0;
 
   constructor(public id: number, public signupDays: number, public booksPerDay: number) {}
 
