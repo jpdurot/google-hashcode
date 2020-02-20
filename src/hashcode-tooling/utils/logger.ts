@@ -17,6 +17,10 @@ export class Logger {
     }
   }
 
+  public static log(message: string, level = LEVEL.LOG): void {
+    Logger.print(message, level);
+  }
+
   public static printLn(message: string, level = LEVEL.LOG): void {
     Logger.print(message + EOL, level);
   }
