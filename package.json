@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
-  "currentExercise": "2017-videos",
+  "currentExercise": "2020-books",
   "scripts": {
     "watch": "concurrently -k -n \"Typescript\" -p \"[{name}]\" -c \"blue\" \"tsc --watch\" ",
     "win:watch": "npm run watch",
