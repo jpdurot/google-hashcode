@@ -27,8 +27,9 @@ export class Solution implements ISolution<PreConditions> {
       for (let j = 0; j < booksPerDay && !done; j++) {
         console.log(`i: ${i}, j: ${j}, numberdays:${this.state.numberOfDays} `);
         let addedBookId = library.scannedBooks[currentIIndex * booksPerDay + j];
-        if (addedBookId !== undefined) {
+        if (addedBookId === undefined) {
           done = true;
+        } else {
           this.currentScore += this.state.books[addedBookId].score;
         }
       }
