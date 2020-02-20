@@ -19,11 +19,15 @@ export class Solution implements ISolution<PreConditions> {
     this.currentSignUpDay += originalLibrary.signupDays;
     let booksPerDay = originalLibrary.booksPerDay;
 
-    for (let i = this.currentSignUpDay + 1; i < this.state.numberOfDays; i++) {
-      let currentIIndex = i - this.currentSignUpDay - 1;
+    this.signedUpLibraries.push(library);
+
+    for (let i = this.currentSignUpDay; i < this.state.numberOfDays; i++) {
+      let currentIIndex = i - this.currentSignUpDay;
       for (let j = 0; j < booksPerDay; j++) {
         let addedBookId = library.scannedBooks[currentIIndex * booksPerDay + j];
-        this.currentScore += this.state.books[addedBookId].score;
+        if (addedBookId !== undefined) {
+          this.currentScore += this.state.books[addedBookId].score;
+        }
       }
     }
   }
