@@ -9,7 +9,11 @@ export class Library {
 
   public calculateScore(books: Book[], numberOfDays: number) {
     // score = average of score of all books * booksPerDay * (this.numberOfDays - signUpDays)
-    this.score =
-      math.mean(...this.bookIds.map(id => books[id].score)) * this.booksPerDay * (numberOfDays - this.signupDays);
+    let numberOfExpectedBooks = (numberOfDays - this.signupDays) * this.booksPerDay;
+    let booksScore = this.bookIds.map(id => books[id].score);
+
+    for (let i = 0; i < numberOfExpectedBooks && i < this.bookIds.length; i++) {
+      this.score += booksScore[i];
+    }
   }
 }

@@ -17,11 +17,13 @@ export class SortedGenerator implements ISolutionGenerator<PreConditions, Soluti
 
     let solution = new Solution(preConditions);
 
-    preConditions.libraries.sort((firstLibrary, secondLibrary) => firstLibrary.score - secondLibrary.score);
+    let libraries = preConditions.libraries.sort(
+      (firstLibrary, secondLibrary) => secondLibrary.score - firstLibrary.score
+    );
 
-    for (let i = 0; i < preConditions.libraries.length; i++) {
+    for (let i = 0; i < libraries.length; i++) {
       console.log(`Taken libraries: ${i}, All libraries: ${preConditions.libraries.length}`);
-      let originalLibrary = preConditions.libraries[i];
+      let originalLibrary = libraries[i];
       if (solution.canAddLibrary(originalLibrary.signupDays)) {
         let signedLibrary = new SignedUpLibrary([...originalLibrary.bookIds], originalLibrary.id);
         solution.addSignedUpLibrary(signedLibrary);
