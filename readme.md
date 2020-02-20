@@ -50,6 +50,7 @@ dist/competitions/2020-training/output
 1. share common understanding of exercise
 2. modelize basic input
 3. modelize output
+3. modelize score calculation
 3. modelize dumb generator
 4. in parallel:
    1. code input
@@ -60,3 +61,7 @@ dist/competitions/2020-training/output
     4. modelize intermediate advanced input
     1. define different steps (ex: remove one dimension in inputs)
 7. iterate...
+
+## TODO
+bootstrap new exercise
+param = name of input file
