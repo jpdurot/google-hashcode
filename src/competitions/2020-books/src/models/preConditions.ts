@@ -7,11 +7,9 @@ export class PreConditions {
   public numberOfDays: number;
   public numberOfLibraries: number;
 
-  public books: Array<Book> = [];
-  public booksById: { [id: number]: Book } = {};
+  public books: Book[] = [];
 
   public libraries: Library[] = [];
-  public libraryById: { [id: number]: Library } = {};
 
   constructor(scanner: Scanner) {
     this.numberOfBooks = scanner.nextInt();
@@ -21,7 +19,6 @@ export class PreConditions {
     for (let b = 0; b < this.numberOfBooks; b++) {
       const book = new Book(b, scanner.nextInt());
       this.books.push(book);
-      this.booksById[book.id] = book;
     }
 
     for (let l = 0; l < this.numberOfLibraries; l++) {
@@ -34,7 +31,6 @@ export class PreConditions {
       }
 
       this.libraries.push(library);
-      this.libraryById[library.id] = library;
     }
   }
 }
