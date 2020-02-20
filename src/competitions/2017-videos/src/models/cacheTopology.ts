@@ -5,14 +5,13 @@ import { Video } from './video';
 import { sum } from '../../../../hashcode-tooling/utils/array-util';
 
 export class CacheTopology implements ISolution<VideoState> {
+  // i == cacheId
   public videosByCache: { cacheId: number; videos: Video[] }[] = [];
 
   constructor(public state: VideoState) {}
 
   get score() {
     const getTimeSaved = (endpointId: number, videoId: number): number => {
-      console.log(`Trying to get endpoint ${endpointId} in ${this.state.endpoints.length}`);
-
       let endpoint = this.state.endpoints[endpointId];
 
       // caches that contain this video
@@ -25,9 +24,10 @@ export class CacheTopology implements ISolution<VideoState> {
       return worstLatency - Math.min(...latencies);
     };
 
-    return (
-      this.state.requestDescriptions.map(r => getTimeSaved(r.endpointId, r.videoId) * r.nbRequests).reduce(sum) /
-      this.state.requestDescriptions.map(rd => rd.nbRequests).reduce(sum)
+    return Math.trunc(
+      (this.state.requestDescriptions.map(r => getTimeSaved(r.endpointId, r.videoId) * r.nbRequests).reduce(sum) /
+        this.state.requestDescriptions.map(rd => rd.nbRequests).reduce(sum)) *
+        1000
     );
   }
 
