@@ -4,12 +4,14 @@ import { Solution } from './models/solution';
 import { PreConditions } from './models/preConditions';
 import { ConsoleGenerator } from './generators/console-generator';
 import { LessDumbGenerator } from './generators/less-dumb-generator';
+import { SortedGenerator } from './generators/sorted-generator';
 
 export class GeneratorFactory {
   static knownGenerators = {
     [DumbGenerator.NAME.toUpperCase()]: () => new DumbGenerator(),
     [ConsoleGenerator.NAME.toUpperCase()]: () => new ConsoleGenerator(),
-    [LessDumbGenerator.NAME.toUpperCase()]: () => new LessDumbGenerator()
+    [LessDumbGenerator.NAME.toUpperCase()]: () => new LessDumbGenerator(),
+    [SortedGenerator.NAME.toUpperCase()]: () => new SortedGenerator()
   };
 
   public static from(name: string): ISolutionGenerator<PreConditions, Solution> {
