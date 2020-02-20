@@ -14,6 +14,8 @@ export class DumbGenerator implements ISolutionGenerator<PreConditions, Solution
     // This is one shot
     this.hasNextGenerator = false;
 
+    console.log(preConditions);
+
     let solution = new Solution(preConditions);
 
     // Do something clever
