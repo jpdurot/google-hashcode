@@ -3,3 +3,5 @@ export function removeFromArray(array: any[], index: number): void {
   array[index] = array[array.length - 1];
   array.pop();
 }
+
+export const sum = (a: number, b: number) => a + b;
