@@ -2,3 +2,4 @@ node_modules/
 dist/
 /src/competitions/**/output/
 /src/hashcode-tooling/graph/graph_data.json
+/src/competitions/**/*.zip
