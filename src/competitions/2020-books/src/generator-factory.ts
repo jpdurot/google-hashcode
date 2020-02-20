@@ -2,10 +2,12 @@ import { ISolutionGenerator } from '../../../hashcode-tooling/i-solution-generat
 import { DumbGenerator } from './generators/dumb-generator';
 import { Solution } from './models/solution';
 import { PreConditions } from './models/preConditions';
+import { ConsoleGenerator } from './generators/console-generator';
 
 export class GeneratorFactory {
   static knownGenerators = {
-    [DumbGenerator.NAME.toUpperCase()]: () => new DumbGenerator()
+    [DumbGenerator.NAME.toUpperCase()]: () => new DumbGenerator(),
+    [ConsoleGenerator.NAME.toUpperCase()]: () => new ConsoleGenerator()
   };
 
   public static from(name: string): ISolutionGenerator<PreConditions, Solution> {
