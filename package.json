@@ -12,7 +12,7 @@
     "graph:serve": "http-server ./src/hashcode-tooling/graph",
     "win:graph:serve": "npm run graph:serve",
     "go": "node dist/index.js -c $npm_package_currentExercise",
-    "win:go": "node dist/index.js -c %npm_package_currentExercise%",
+    "win:go": "node dist/competitions/%npm_package_currentExercise%/src/index.js",
     "go:profile": "node --inspect-brk dist/competitions/$npm_package_currentExercise/src/index.js",
     "win:go:profile": "node --inspect-brk dist/competitions/%npm_package_currentExercise%/src/index.js",
     "prettier": "prettier --write \"./src/**/*.ts\""

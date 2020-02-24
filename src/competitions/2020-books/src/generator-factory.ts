@@ -6,6 +6,7 @@ import { ConsoleGenerator } from './generators/console-generator';
 import { LessDumbGenerator } from './generators/less-dumb-generator';
 import { BookOnceGenerator } from './generators/book-once-generator';
 import { SortedGenerator } from './generators/sorted-generator';
+import { SearchGenerator } from './generators/search-generator';
 
 export class GeneratorFactory {
   static knownGenerators = {
@@ -13,7 +14,8 @@ export class GeneratorFactory {
     [ConsoleGenerator.NAME.toUpperCase()]: () => new ConsoleGenerator(),
     [LessDumbGenerator.NAME.toUpperCase()]: () => new LessDumbGenerator(),
     [BookOnceGenerator.NAME.toUpperCase()]: () => new BookOnceGenerator(),
-    [SortedGenerator.NAME.toUpperCase()]: () => new SortedGenerator()
+    [SortedGenerator.NAME.toUpperCase()]: () => new SortedGenerator(),
+    [SearchGenerator.NAME.toUpperCase()]: () => new SearchGenerator()
   };
 
   public static from(name: string): ISolutionGenerator<PreConditions, Solution> {
