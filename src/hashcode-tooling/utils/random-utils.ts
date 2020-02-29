@@ -26,3 +26,20 @@ export function randomInDict<X, T>(dictionary: Dictionary<X, T>): T {
   // @ts-ignore
   return randValue;
 }
+
+// Took and adapted from @nicolashery's https://gist.github.com/nicolashery/5885280
+export function randomExponential(rate: number) {
+  // http://en.wikipedia.org/wiki/Exponential_distribution#Generating_exponential_variates
+  rate = rate || 1;
+
+  // Allow to pass a random uniform value or function
+  // Default to Math.random()
+  var U = Math.random();
+
+  return -Math.log(U) / rate;
+}
+
+export function randIntMaxExponential(max: number, rate: number) {
+  let randInt = Math.round(randomExponential(rate));
+  return randInt < max ? randInt : max;
+}

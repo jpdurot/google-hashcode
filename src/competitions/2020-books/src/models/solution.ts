@@ -63,6 +63,31 @@ export class Solution implements ISolution<PreConditions> {
     return score / originalLibrary.signupDays;
   }
 
+  getPossibleLibraryScore(originalLibrary: Library): number {
+    let booksPerDay = originalLibrary.booksPerDay;
+    let newDays = this.currentSignUpDay + originalLibrary.signupDays;
+
+    let score = 0;
+    let done = false;
+
+    if (newDays > this.state.numberOfDays) {
+      return 0;
+    }
+    for (let i = newDays; i < this.state.numberOfDays && !done; i++) {
+      let currentIIndex = i - newDays;
+      for (let j = 0; j < booksPerDay && !done; j++) {
+        let addedBookId = originalLibrary.bookIds[currentIIndex * booksPerDay + j];
+        if (addedBookId === undefined) {
+          done = true;
+        } else {
+          score += this.state.books[addedBookId].isAvailable ? this.state.books[addedBookId].score : 0;
+        }
+      }
+    }
+
+    return score / originalLibrary.signupDays;
+  }
+
   canAddLibrary(librarySignUpDays: number) {
     return this.currentSignUpDay + librarySignUpDays < this.state.numberOfDays;
   }
